@@ -1,5 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
 using AuthService.Application.Interfaces;
-using AuthService.Domain.Entity;
 using AuthService.Infrastructure.Data.Database;
 using AuthService.Presentation.Models;
 
@@ -17,4 +17,20 @@ public class AccountService(AuthDbContext authDbContext) : IAccountService
 
         return Task.FromResult(userDto);
     }
+
+    public async Task<TokenResponse> Login(LoginDTO loginDTO)
+    {
+        var user = authDbContext.Users.FirstOrDefault(user => user.Email == loginDTO.Email);
+        var token = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken());
+        var refreshToken = Guid.NewGuid().ToString();
+        var expiresAt = DateTime.Now.AddMinutes(15);
+        var tokenDto = new TokenResponse
+        {
+            AccessToken = token,
+            RefreshToken = refreshToken,
+        };
+
+        return await Task.FromResult(tokenDto);
+    }
+
 }

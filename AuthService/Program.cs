@@ -25,13 +25,11 @@ builder.Services.AddDbContext<AuthDbContext>(
 
 
 builder.Services.AddIdentityCore<User>()
-    .AddEntityFrameworkStores<AuthDbContext>()
-    .AddApiEndpoints();  
+    .AddEntityFrameworkStores<AuthDbContext>();
 
 
 var app = builder.Build();
 
-app.MapIdentityApi<User>();
 
 
 if (app.Environment.IsDevelopment())

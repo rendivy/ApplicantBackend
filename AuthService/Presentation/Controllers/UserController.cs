@@ -8,14 +8,23 @@ namespace AuthService.Presentation.Controllers;
 
 [ApiController]
 [Route("api/user")]
-[Authorize]
 public class UserController(AccountService accountService) : Controller
 {
     [HttpGet]
     [Route("info")]
+    [Authorize]
     public async Task<UserDTO> GetUserInfo()
     {
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
         return await accountService.GetUserById(userId);
+    }
+    
+    
+    [HttpPost]
+    [Route("login")]
+    public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
+    {
+        var token = await accountService.Login(loginDTO);
+        return Ok(token);
     }
 }
