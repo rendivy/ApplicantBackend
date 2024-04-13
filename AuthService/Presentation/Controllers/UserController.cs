@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using AuthService.Application.Interfaces;
 using AuthService.Application.Services;
 using AuthService.Presentation.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,7 @@ namespace AuthService.Presentation.Controllers;
 
 [ApiController]
 [Route("api/user")]
-public class UserController(AccountService accountService) : Controller
+public class UserController(IAccountService accountService) : Controller
 {
     [HttpGet]
     [Route("info")]
@@ -18,13 +19,12 @@ public class UserController(AccountService accountService) : Controller
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
         return await accountService.GetUserById(userId);
     }
-    
-    
+
+
     [HttpPost]
-    [Route("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
+    [Route("registration")]
+    public async Task<TokenResponse> Registration(RegistrationRequest registrationRequest)
     {
-        var token = await accountService.Login(loginDTO);
-        return Ok(token);
+        return await accountService.Registration(registrationRequest);
     }
 }

@@ -1,11 +1,13 @@
-using System.IdentityModel.Tokens.Jwt;
 using AuthService.Application.Interfaces;
+using AuthService.Domain.Entity;
 using AuthService.Infrastructure.Data.Database;
 using AuthService.Presentation.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AuthService.Application.Services;
 
-public class AccountService(AuthDbContext authDbContext) : IAccountService
+public class AccountService(AuthDbContext authDbContext, UserManager<User> userManager, JwtProvider jwtProvider)
+    : IAccountService
 {
     public Task<UserDTO> GetUserById(string userId)
     {
@@ -18,19 +20,20 @@ public class AccountService(AuthDbContext authDbContext) : IAccountService
         return Task.FromResult(userDto);
     }
 
-    public async Task<TokenResponse> Login(LoginDTO loginDTO)
+
+    public async Task<TokenResponse> Registration(RegistrationRequest registrationRequest)
     {
-        var user = authDbContext.Users.FirstOrDefault(user => user.Email == loginDTO.Email);
-        var token = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken());
-        var refreshToken = Guid.NewGuid().ToString();
-        var expiresAt = DateTime.Now.AddMinutes(15);
-        var tokenDto = new TokenResponse
+        var user = new User
         {
-            AccessToken = token,
-            RefreshToken = refreshToken,
+            UserName = registrationRequest.Email,
+            Email = registrationRequest.Email
         };
 
-        return await Task.FromResult(tokenDto);
+        var result = await userManager.CreateAsync(user, registrationRequest.Password);
+        if (!result.Succeeded)
+        {
+            throw new Exception("User creation failed: " + string.Join(", ", result.Errors.Select(x => x.Description)));
+        }
+        return jwtProvider.CreateTokenResponse(new Guid(user.Id));
     }
-
 }

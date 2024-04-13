@@ -1,9 +1,13 @@
 using System.Security.Claims;
+using System.Text;
 using AuthService.Application.Services;
+using AuthService.Configuration;
 using AuthService.Domain.Entity;
 using AuthService.Infrastructure.Data.Database;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,13 +27,15 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AuthDbContext>(
     options => options.UseNpgsql(builder.Configuration.GetConnectionString("AuthDatabaseConnection")));
 
+AuthConfiguration.AddJwt(builder.Services, builder.Configuration);
 
 builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<AuthDbContext>();
 
+ServiceConfiguration.AddServices(builder.Services);
+builder.Services.AddScoped<JwtProvider>();
 
 var app = builder.Build();
-
 
 
 if (app.Environment.IsDevelopment())
@@ -40,6 +46,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 
+//дефолтные роли
 
 app.UseHttpsRedirection();
 
