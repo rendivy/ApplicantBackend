@@ -1,13 +1,9 @@
-using System.Security.Claims;
-using System.Text;
 using AuthService.Application.Services;
 using AuthService.Configuration;
 using AuthService.Domain.Entity;
 using AuthService.Infrastructure.Data.Database;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 

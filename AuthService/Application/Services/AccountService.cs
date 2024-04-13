@@ -2,6 +2,7 @@ using AuthService.Application.Interfaces;
 using AuthService.Domain.Entity;
 using AuthService.Infrastructure.Data.Database;
 using AuthService.Presentation.Models;
+using Common.CustomException;
 using Microsoft.AspNetCore.Identity;
 
 namespace AuthService.Application.Services;
@@ -41,9 +42,9 @@ public class AccountService(AuthDbContext authDbContext, UserManager<User> userM
     public async Task<TokenResponse> Login(LoginRequest loginRequest)
     {
         var user = authDbContext.Users.FirstOrDefault(user => user.Email == loginRequest.Email);
-        if (user == null) throw new Exception("User not found");
+        if (user == null) throw new UserNotFoundException("User not found");
         var passwordCheck = await userManager.CheckPasswordAsync(user, loginRequest.Password);
-        if (!passwordCheck) throw new Exception("Invalid password");
+        if (!passwordCheck) throw new InvalidPasswordException("Invalid password");
         return jwtProvider.CreateTokenResponse(new Guid(user.Id));
     }
 }
