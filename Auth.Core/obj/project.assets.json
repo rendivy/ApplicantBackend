@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Core/Core.csproj",
-      "projectName": "Core",
-      "projectPath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Core/Core.csproj",
+      "projectUniqueName": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Auth.Core/Auth.Core.csproj",
+      "projectName": "Auth.Core",
+      "projectPath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Auth.Core/Auth.Core.csproj",
       "packagesPath": "/Users/yuriyyangel/.nuget/packages/",
-      "outputPath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Core/obj/",
+      "outputPath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Auth.Core/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/yuriyyangel/.nuget/NuGet/NuGet.Config"

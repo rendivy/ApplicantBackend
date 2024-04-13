@@ -7,7 +7,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AuthService.Application.Services;
 
-public class AccountService(AuthDbContext authDbContext, UserManager<User> userManager, JwtProvider jwtProvider)
+public class AccountService(
+    AuthDbContext authDbContext,
+    UserManager<User> userManager,
+    JwtProvider jwtProvider)
     : IAccountService
 {
     public Task<UserRequest> GetUserById(string userId)
@@ -15,10 +18,11 @@ public class AccountService(AuthDbContext authDbContext, UserManager<User> userM
         var user = userManager.FindByIdAsync(userId).Result;
         if (user == null) throw new UserNotFoundException("User not found");
 
-        var userDto = new UserRequest.UserDTOBuilder()
-            .WithEmail(user.Email)
-            .WithIsEmailConfirmed(user.EmailConfirmed)
-            .Build();
+        var userDto = new UserRequest
+        {
+            Id = user.Id,
+            Email = user.Email,
+        };
 
         return Task.FromResult(userDto);
     }
@@ -29,10 +33,13 @@ public class AccountService(AuthDbContext authDbContext, UserManager<User> userM
         var user = new User
         {
             UserName = registrationRequest.Email,
-            Email = registrationRequest.Email
+            Email = registrationRequest.Email,
         };
 
+        
+
         var result = await userManager.CreateAsync(user, registrationRequest.Password);
+        await userManager.AddToRoleAsync(user, Roles.Applicant.ToString());
         if (!result.Succeeded)
         {
             throw new Exception("User creation failed: " + string.Join(", ", result.Errors.Select(x => x.Description)));

@@ -144,8 +144,8 @@
 /Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll
 /Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll
 /Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
-/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Core.deps.json
-/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Core.runtimeconfig.json
-/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Core
-/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Core.dll
-/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Core.pdb
+/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Auth.Core.deps.json
+/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Auth.Core.runtimeconfig.json
+/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Auth.Core
+/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Auth.Core.dll
+/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Auth.Core.pdb

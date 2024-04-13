@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "v9e1jCJq7TsPLtal36Fs0QLxYEbb64FqMRFDpmTijII=",
-  "Source": "Core",
-  "BasePath": "_content/Core",
+  "Hash": "qtN5iDqP15xiFdzRrdr13sDim4cCkOL+3lnfSL5uDPo=",
+  "Source": "Auth.Core",
+  "BasePath": "_content/Auth.Core",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

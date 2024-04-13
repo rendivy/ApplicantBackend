@@ -9,8 +9,8 @@ public static class UserMapper
     {
         return new UserRequest
         {
+            Id = identityUser.Id,
             Email = identityUser.Email,
-            IsEmailConfirmed = identityUser.EmailConfirmed
         };
     }
 }

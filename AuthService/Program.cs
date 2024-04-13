@@ -25,8 +25,9 @@ builder.Services.AddDbContext<AuthDbContext>(
 
 AuthConfiguration.AddJwt(builder.Services, builder.Configuration);
 
-builder.Services.AddIdentityCore<User>()
+builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AuthDbContext>();
+
 
 ServiceConfiguration.AddServices(builder.Services);
 builder.Services.AddScoped<JwtProvider>();
@@ -43,6 +44,17 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 
 //дефолтные роли
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    foreach (var role in Enum.GetNames<Roles>())
+    {
+        if (!roleManager.RoleExistsAsync(role).Result)
+        {
+            roleManager.CreateAsync(new IdentityRole(role)).Wait();
+        }
+    }
+}
 
 app.UseHttpsRedirection();
 
