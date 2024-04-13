@@ -19,6 +19,14 @@ public class UserController(IAccountService accountService) : Controller
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
         return await accountService.GetUserById(userId);
     }
+    
+    
+    [HttpPost]
+    [Route("login")]
+    public async Task<TokenResponse> Login(LoginRequest loginRequest)
+    {
+        return await accountService.Login(loginRequest);
+    }
 
 
     [HttpPost]
