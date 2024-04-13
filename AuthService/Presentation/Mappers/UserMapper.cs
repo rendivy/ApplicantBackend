@@ -5,9 +5,9 @@ namespace AuthService.Presentation.Mappers;
 
 public static class UserMapper
 {
-    public static UserDTO MapToDto(IdentityUser identityUser)
+    public static UserRequest MapToDto(IdentityUser identityUser)
     {
-        return new UserDTO
+        return new UserRequest
         {
             Email = identityUser.Email,
             IsEmailConfirmed = identityUser.EmailConfirmed

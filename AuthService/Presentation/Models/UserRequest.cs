@@ -1,11 +1,11 @@
 namespace AuthService.Presentation.Models;
 
-public record UserDTO
+public record UserRequest
 {
     public string Email { get; init; }
     public bool IsEmailConfirmed { get; init; }
 
-    public UserDTO() { }
+    public UserRequest() { }
 
     public class UserDTOBuilder
     {
@@ -24,9 +24,9 @@ public record UserDTO
             return this;
         }
 
-        public UserDTO Build()
+        public UserRequest Build()
         {
-            return new UserDTO
+            return new UserRequest
             {
                 Email = Email,
                 IsEmailConfirmed = IsEmailConfirmed

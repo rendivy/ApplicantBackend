@@ -10,10 +10,12 @@ namespace AuthService.Application.Services;
 public class AccountService(AuthDbContext authDbContext, UserManager<User> userManager, JwtProvider jwtProvider)
     : IAccountService
 {
-    public Task<UserDTO> GetUserById(string userId)
+    public Task<UserRequest> GetUserById(string userId)
     {
-        var user = authDbContext.Users.FirstOrDefault(user => user.Id.ToString() == userId);
-        var userDto = new UserDTO.UserDTOBuilder()
+        var user = userManager.FindByIdAsync(userId).Result;
+        if (user == null) throw new UserNotFoundException("User not found");
+
+        var userDto = new UserRequest.UserDTOBuilder()
             .WithEmail(user.Email)
             .WithIsEmailConfirmed(user.EmailConfirmed)
             .Build();

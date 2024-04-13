@@ -14,9 +14,9 @@ public class UserController(IAccountService accountService) : Controller
     [HttpGet]
     [Route("info")]
     [Authorize]
-    public async Task<UserDTO> GetUserInfo()
+    public async Task<UserRequest> GetUserInfo()
     {
-        var userId = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
+        var userId = User.FindFirstValue(ClaimTypes.Name);
         return await accountService.GetUserById(userId);
     }
     
