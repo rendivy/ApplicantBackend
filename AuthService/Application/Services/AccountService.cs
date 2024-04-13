@@ -34,6 +34,16 @@ public class AccountService(AuthDbContext authDbContext, UserManager<User> userM
         {
             throw new Exception("User creation failed: " + string.Join(", ", result.Errors.Select(x => x.Description)));
         }
+
+        return jwtProvider.CreateTokenResponse(new Guid(user.Id));
+    }
+
+    public async Task<TokenResponse> Login(LoginRequest loginRequest)
+    {
+        var user = authDbContext.Users.FirstOrDefault(user => user.Email == loginRequest.Email);
+        if (user == null) throw new Exception("User not found");
+        var passwordCheck = await userManager.CheckPasswordAsync(user, loginRequest.Password);
+        if (!passwordCheck) throw new Exception("Invalid password");
         return jwtProvider.CreateTokenResponse(new Guid(user.Id));
     }
 }
