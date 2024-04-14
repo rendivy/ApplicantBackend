@@ -5,9 +5,11 @@ namespace AuthService.Application.Interfaces;
 
 public interface IAccountService
 {
-   public Task<UserRequest> GetUserById(string userId);
+    public Task<UserRequest> GetUserById(string userId);
 
-   public Task<TokenResponse> Registration(RegistrationRequest registrationRequest);
+    public Task AddRole(string currentUserId, string userId, Roles role);
 
-   public Task<TokenResponse> Login(LoginRequest loginRequest);
+    public Task<TokenResponse> Registration(RegistrationRequest registrationRequest);
+
+    public Task<TokenResponse> Login(LoginRequest loginRequest);
 }

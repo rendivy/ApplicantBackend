@@ -1,7 +1,9 @@
 using System.Security.Claims;
 using AuthService.Application.Interfaces;
 using AuthService.Application.Services;
+using AuthService.Domain.Entity;
 using AuthService.Presentation.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,14 +15,24 @@ public class UserController(IAccountService accountService) : Controller
 {
     [HttpGet]
     [Route("info")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<UserRequest> GetUserInfo()
     {
         var userId = User.FindFirstValue(ClaimTypes.Name);
         return await accountService.GetUserById(userId);
     }
-    
-    
+
+
+    [HttpPost]
+    [Route("{userId}/role")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task AddRole(string userId, Roles role)
+    {
+        var currentUserId = User.FindFirstValue(ClaimTypes.Name);
+        await accountService.AddRole(currentUserId, userId, role);
+    }
+
+
     [HttpPost]
     [Route("login")]
     public async Task<TokenResponse> Login(LoginRequest loginRequest)

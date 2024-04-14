@@ -1,0 +1,4 @@
+- Get new pair of tokens
+- Change password
+- Get User profile 
+- Add a role to user

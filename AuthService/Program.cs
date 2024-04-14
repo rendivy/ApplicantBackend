@@ -4,12 +4,41 @@ using AuthService.Domain.Entity;
 using AuthService.Infrastructure.Data.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
+
+
 
 
 builder.Services
@@ -19,6 +48,8 @@ builder.Services
 builder.Services.AddAuthorizationBuilder();
 
 builder.Services.AddControllers();
+
+
 
 builder.Services.AddDbContext<AuthDbContext>(
     options => options.UseNpgsql(builder.Configuration.GetConnectionString("AuthDatabaseConnection")));
@@ -42,6 +73,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+
+
+
 
 //дефолтные роли
 using (var scope = app.Services.CreateScope())

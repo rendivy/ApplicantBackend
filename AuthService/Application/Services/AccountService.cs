@@ -7,10 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AuthService.Application.Services;
 
-public class AccountService(
-    AuthDbContext authDbContext,
-    UserManager<User> userManager,
-    JwtProvider jwtProvider)
+public class AccountService(AuthDbContext authDbContext, UserManager<User> userManager, JwtProvider jwtProvider)
     : IAccountService
 {
     public Task<UserRequest> GetUserById(string userId)
@@ -22,9 +19,23 @@ public class AccountService(
         {
             Id = user.Id,
             Email = user.Email,
+            Role = userManager.GetRolesAsync(user).Result.FirstOrDefault()
         };
 
         return Task.FromResult(userDto);
+    }
+
+    public Task AddRole(string currentUserId, string userId, Roles role)
+    {
+        var current = userManager.FindByIdAsync(currentUserId).Result;
+        if (userManager.GetRolesAsync(current).Result.FirstOrDefault() != Roles.Admin.ToString())
+            throw new UnauthorizedAccessException("You don't have permission to add role");
+
+        var user = userManager.FindByIdAsync(userId).Result;
+        if (user == null) throw new UserNotFoundException("User not found");
+
+        userManager.AddToRoleAsync(user, role.ToString()).Wait();
+        return Task.CompletedTask;
     }
 
 
@@ -36,7 +47,6 @@ public class AccountService(
             Email = registrationRequest.Email,
         };
 
-        
 
         var result = await userManager.CreateAsync(user, registrationRequest.Password);
         await userManager.AddToRoleAsync(user, Roles.Applicant.ToString());
