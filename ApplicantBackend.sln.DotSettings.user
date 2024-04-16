@@ -3,4 +3,5 @@
 	
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;
   &lt;Assembly Path="/Users/yuriyyangel/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/8.0.3/lib/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll" /&gt;
+  &lt;Assembly Path="/usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.3/ref/net8.0/System.ComponentModel.Annotations.dll" /&gt;
 &lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>

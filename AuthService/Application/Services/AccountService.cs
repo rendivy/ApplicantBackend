@@ -46,6 +46,11 @@ public class AccountService(AuthDbContext authDbContext, UserManager<User> userM
         {
             UserName = registrationRequest.Email,
             Email = registrationRequest.Email,
+            FullName = registrationRequest.FullName,
+            PhoneNumber = registrationRequest.PhoneNumber,
+            Citizenship = registrationRequest.Citizenship,
+            DateOfBirth = registrationRequest.DateOfBirth,
+            Gender = registrationRequest.Gender
         };
 
 
