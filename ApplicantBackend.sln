@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnrollmentService", "Enroll
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandbookService", "HandbookService\HandbookService.csproj", "{A87A2A7E-309E-4070-AE65-3050C3939FA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebManagerMVC", "WebManagerMVC\WebManagerMVC.csproj", "{A0FBB171-4B17-4B80-B236-96446A9D86BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{A87A2A7E-309E-4070-AE65-3050C3939FA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A87A2A7E-309E-4070-AE65-3050C3939FA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A87A2A7E-309E-4070-AE65-3050C3939FA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0FBB171-4B17-4B80-B236-96446A9D86BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0FBB171-4B17-4B80-B236-96446A9D86BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0FBB171-4B17-4B80-B236-96446A9D86BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0FBB171-4B17-4B80-B236-96446A9D86BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
