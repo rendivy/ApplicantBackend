@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using AuthService.Domain.Entity;
 using AuthService.Presentation.Models;
 using Microsoft.IdentityModel.Tokens;
 
@@ -10,24 +11,24 @@ namespace AuthService.Application.Services;
 public class JwtProvider
 {
     private readonly IConfiguration _configuration;
-    
-    
+
+
     public JwtProvider(IConfiguration configuration)
     {
         _configuration = configuration;
     }
-    
-    public TokenResponse CreateTokenResponse(Guid id)
+
+    public TokenResponse CreateTokenResponse(Guid id, string role)
     {
         return new TokenResponse
         {
-            AccessToken = CreateAccessToken(id),
+            AccessToken = CreateAccessToken(id, role),
             RefreshToken = CreateRefreshToken()
         };
     }
-    
-    
-    private string CreateAccessToken(Guid id)
+
+
+    private string CreateAccessToken(Guid id, string role)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("AppSettings:SecretKey")!);
@@ -39,7 +40,8 @@ public class JwtProvider
             Subject = new ClaimsIdentity(new Claim[]
             {
                 new(ClaimTypes.Name, id.ToString()),
-                new(ClaimTypes.NameIdentifier, tokenId.ToString())
+                new(ClaimTypes.NameIdentifier, tokenId.ToString()),
+                new(ClaimTypes.Role, role)
             }),
             Expires = DateTime.UtcNow.AddMinutes(expireMinutes),
             Issuer = issuer,
@@ -60,6 +62,4 @@ public class JwtProvider
     {
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(128));
     }
-    
-    
 }

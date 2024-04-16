@@ -29,57 +29,36 @@ builder.Services.AddSwaggerGen(option =>
             {
                 Reference = new OpenApiReference
                 {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
                 }
             },
-            new string[]{}
+            new string[] { }
         }
     });
 });
 
-
-
-
-builder.Services
-    .AddAuthentication()
-    .AddBearerToken(IdentityConstants.BearerScheme);
-
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorizationBuilder();
-
 builder.Services.AddControllers();
-
-
-
 builder.Services.AddDbContext<AuthDbContext>(
-    options => options.UseNpgsql(builder.Configuration.GetConnectionString("AuthDatabaseConnection")));
-
-AuthConfiguration.AddJwt(builder.Services, builder.Configuration);
-
+    it => it.UseNpgsql(builder.Configuration.GetConnectionString("AuthDatabaseConnection")));
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AuthDbContext>();
 
 
+AuthConfiguration.AddJwt(builder.Services, builder.Configuration);
 ServiceConfiguration.AddServices(builder.Services);
+
 builder.Services.AddScoped<JwtProvider>();
 
 var app = builder.Build();
 
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.MapControllers();
-
-
-
-
-//дефолтные роли
 using (var scope = app.Services.CreateScope())
 {
+    var context = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+    await context.Database.MigrateAsync();
+    
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     foreach (var role in Enum.GetNames<Roles>())
     {
@@ -90,12 +69,14 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.MapControllers();
 app.UseHttpsRedirection();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
-    dbContext.Database.Migrate();
-}
 
 app.Run();

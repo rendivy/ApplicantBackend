@@ -10,8 +10,9 @@ namespace AuthService.Application.Services;
 public class AccountService(AuthDbContext authDbContext, UserManager<User> userManager, JwtProvider jwtProvider)
     : IAccountService
 {
-    public Task<UserRequest> GetUserById(string userId)
+    public Task<UserRequest> GetUserById(string? userId)
     {
+        if (userId == null) throw new UserNotFoundException("User not found");
         var user = userManager.FindByIdAsync(userId).Result;
         if (user == null) throw new UserNotFoundException("User not found");
 
@@ -55,7 +56,7 @@ public class AccountService(AuthDbContext authDbContext, UserManager<User> userM
             throw new Exception("User creation failed: " + string.Join(", ", result.Errors.Select(x => x.Description)));
         }
 
-        return jwtProvider.CreateTokenResponse(new Guid(user.Id));
+        return jwtProvider.CreateTokenResponse(new Guid(user.Id), Roles.Applicant.ToString());
     }
 
     public async Task<TokenResponse> Login(LoginRequest loginRequest)
@@ -64,6 +65,7 @@ public class AccountService(AuthDbContext authDbContext, UserManager<User> userM
         if (user == null) throw new UserNotFoundException("User not found");
         var passwordCheck = await userManager.CheckPasswordAsync(user, loginRequest.Password);
         if (!passwordCheck) throw new InvalidPasswordException("Invalid password");
-        return jwtProvider.CreateTokenResponse(new Guid(user.Id));
+        var userRole = userManager.GetRolesAsync(user).Result.FirstOrDefault();
+        return jwtProvider.CreateTokenResponse(new Guid(user.Id), userRole);
     }
 }
