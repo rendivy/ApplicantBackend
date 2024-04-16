@@ -1,5 +1,5 @@
-using AuthService.Application.Interfaces;
 using AuthService.Application.Services;
+using AuthService.Domain.Interfaces;
 
 namespace AuthService.Configuration;
 

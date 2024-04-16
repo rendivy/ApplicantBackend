@@ -10,3 +10,4 @@ public class User : IdentityUser
     [Required] public string FullName { get; set; }
     [Required] public string Citizenship { get; set; }
 }
+

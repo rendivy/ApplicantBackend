@@ -8,16 +8,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AuthService.Application.Services;
 
-public class JwtProvider
+public class JwtProvider(IConfiguration configuration)
 {
-    private readonly IConfiguration _configuration;
-
-
-    public JwtProvider(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
     public TokenResponse CreateTokenResponse(Guid id, string role)
     {
         return new TokenResponse
@@ -31,9 +23,9 @@ public class JwtProvider
     private string CreateAccessToken(Guid id, string role)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("AppSettings:SecretKey")!);
-        var expireMinutes = _configuration.GetValue<double>("AppSettings:AccessTokenExpireMinutes");
-        var issuer = _configuration.GetValue<string>("AppSettings:Issuer")!;
+        var key = Encoding.ASCII.GetBytes(configuration.GetValue<string>("AppSettings:SecretKey")!);
+        var expireMinutes = configuration.GetValue<double>("AppSettings:AccessTokenExpireMinutes");
+        var issuer = configuration.GetValue<string>("AppSettings:Issuer")!;
         var tokenId = Guid.NewGuid();
         var tokenDescriptor = new SecurityTokenDescriptor
         {

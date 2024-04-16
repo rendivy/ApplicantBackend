@@ -25,4 +25,8 @@
       <ProjectReference Include="..\Auth.Core\Auth.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Presentation\Models\" />
+    </ItemGroup>
+
 </Project>

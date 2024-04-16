@@ -1,9 +1,11 @@
+using System.Text.Json.Serialization;
 using AuthService.Application.Services;
 using AuthService.Configuration;
 using AuthService.Domain.Entity;
 using AuthService.Infrastructure.Data.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,7 +47,8 @@ builder.Services.AddSwaggerGen(option =>
 
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorizationBuilder();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));;
 builder.Services.AddDbContext<AuthDbContext>(
     it => it.UseNpgsql(builder.Configuration.GetConnectionString("AuthDatabaseConnection")));
 builder.Services.AddIdentity<User, IdentityRole>()
@@ -58,12 +61,13 @@ ServiceConfiguration.AddServices(builder.Services);
 builder.Services.AddScoped<JwtProvider>();
 
 var app = builder.Build();
+MiddlewareConfiguration.AddMiddlewares(app);
 
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
     await context.Database.MigrateAsync();
-    
+
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     foreach (var role in Enum.GetNames<Roles>())
     {

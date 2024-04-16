@@ -1,6 +1,8 @@
-using AuthService.Application.Interfaces;
 using AuthService.Domain.Entity;
+using AuthService.Domain.Exception;
+using AuthService.Domain.Interfaces;
 using AuthService.Infrastructure.Data.Database;
+using AuthService.Presentation.Mappers;
 using AuthService.Presentation.Models;
 using Common.CustomException;
 using Microsoft.AspNetCore.Identity;
@@ -10,33 +12,28 @@ namespace AuthService.Application.Services;
 public class AccountService(AuthDbContext authDbContext, UserManager<User> userManager, JwtProvider jwtProvider)
     : IAccountService
 {
-    public Task<UserRequest> GetUserById(string? userId)
+    public async Task<UserRequest> GetUserById(string? userId)
     {
         if (userId == null) throw new UserNotFoundException("User not found");
-        var user = userManager.FindByIdAsync(userId).Result;
+        var user = await userManager.FindByIdAsync(userId);
         if (user == null) throw new UserNotFoundException("User not found");
 
-        var userDto = new UserRequest
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Role = userManager.GetRolesAsync(user).Result.FirstOrDefault()
-        };
-
-        return Task.FromResult(userDto);
+        var roles = await userManager.GetRolesAsync(user);
+        return UserMapper.MapToDto(user, roles.FirstOrDefault());
     }
 
-    public Task AddRole(string currentUserId, string userId, Roles role)
+    public async Task AddRole(string currentUserId, string userId, Roles role)
     {
-        var current = userManager.FindByIdAsync(currentUserId).Result;
-        if (userManager.GetRolesAsync(current).Result.FirstOrDefault() != Roles.Admin.ToString())
-            throw new UnauthorizedAccessException("You don't have permission to add role");
-
-        var user = userManager.FindByIdAsync(userId).Result;
+        var current = await userManager.FindByIdAsync(currentUserId);
+        var currentRoles = await userManager.GetRolesAsync(current);
+        if (current != null && currentRoles.FirstOrDefault() != Roles.Admin.ToString())
+            throw new UserDoesntHavePermissionException("You don't have permission to add role");
+        var user = await userManager.FindByIdAsync(userId);
         if (user == null) throw new UserNotFoundException("User not found");
+        var userRole = (await userManager.GetRolesAsync(user)).FirstOrDefault();
+        if (userRole == role.ToString()) throw new UserAlreadyHaveRoleException("User already has this role");
 
-        userManager.AddToRoleAsync(user, role.ToString()).Wait();
-        return Task.CompletedTask;
+        await userManager.AddToRoleAsync(user, role.ToString());
     }
 
 
@@ -53,14 +50,13 @@ public class AccountService(AuthDbContext authDbContext, UserManager<User> userM
             Gender = registrationRequest.Gender
         };
 
-
         var result = await userManager.CreateAsync(user, registrationRequest.Password);
-        await userManager.AddToRoleAsync(user, Roles.Applicant.ToString());
         if (!result.Succeeded)
         {
             throw new Exception("User creation failed: " + string.Join(", ", result.Errors.Select(x => x.Description)));
         }
 
+        await userManager.AddToRoleAsync(user, Roles.Applicant.ToString());
         return jwtProvider.CreateTokenResponse(new Guid(user.Id), Roles.Applicant.ToString());
     }
 
@@ -70,7 +66,7 @@ public class AccountService(AuthDbContext authDbContext, UserManager<User> userM
         if (user == null) throw new UserNotFoundException("User not found");
         var passwordCheck = await userManager.CheckPasswordAsync(user, loginRequest.Password);
         if (!passwordCheck) throw new InvalidPasswordException("Invalid password");
-        var userRole = userManager.GetRolesAsync(user).Result.FirstOrDefault();
+        var userRole = (await userManager.GetRolesAsync(user)).FirstOrDefault();
         return jwtProvider.CreateTokenResponse(new Guid(user.Id), userRole);
     }
 }

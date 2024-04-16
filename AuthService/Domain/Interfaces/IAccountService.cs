@@ -1,7 +1,7 @@
 using AuthService.Domain.Entity;
 using AuthService.Presentation.Models;
 
-namespace AuthService.Application.Interfaces;
+namespace AuthService.Domain.Interfaces;
 
 public interface IAccountService
 {

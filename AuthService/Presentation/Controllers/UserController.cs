@@ -1,6 +1,6 @@
 using System.Security.Claims;
-using AuthService.Application.Interfaces;
 using AuthService.Domain.Entity;
+using AuthService.Domain.Interfaces;
 using AuthService.Presentation.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
