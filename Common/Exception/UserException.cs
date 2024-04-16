@@ -1,4 +1,4 @@
-namespace Common.CustomException;
+namespace Common.Exception;
 
 public class UserAlreadyHaveRoleException(string message) : System.Exception(message);
 

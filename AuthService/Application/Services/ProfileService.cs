@@ -4,7 +4,7 @@ using AuthService.Domain.Interfaces;
 using AuthService.Infrastructure.Data.Database;
 using AuthService.Presentation.Mappers;
 using AuthService.Presentation.Models.Account;
-using Common.CustomException;
+using Common.Exception;
 using Microsoft.AspNetCore.Identity;
 
 namespace AuthService.Application.Services;

@@ -1,4 +1,4 @@
-using Common.CustomException;
+using Common.Exception;
 
 namespace AuthService.Infrastructure.Middleware;
 
