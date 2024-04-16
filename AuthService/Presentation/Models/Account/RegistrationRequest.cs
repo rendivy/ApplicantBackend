@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using AuthService.Domain.Entity;
 
-namespace AuthService.Presentation.Models;
+namespace AuthService.Presentation.Models.Account;
 
 public class RegistrationRequest
 {

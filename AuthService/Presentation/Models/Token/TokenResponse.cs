@@ -1,4 +1,4 @@
-namespace AuthService.Presentation.Models;
+namespace AuthService.Presentation.Models.Token;
 
 public class TokenResponse
 {

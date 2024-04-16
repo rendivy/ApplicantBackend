@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "GKml4TeDu1pv11pPNdyLCWcPMyO78w6EWFKE7GZ2JHw4CnW29FefPMVzY9nZDe+35XJcRmEOku+q+f9fvK1uBA==",
+  "dgSpecHash": "7GIdzbvgou/MrPd7Atu0NDm/5P1CiQcFcILPWrcPvHGaJ/s+yIeb6pAuU3NKw4NsH658/NVaGLEcR4WKY20Jbg==",
   "success": true,
   "projectFilePath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/AuthService.csproj",
   "expectedPackageFiles": [

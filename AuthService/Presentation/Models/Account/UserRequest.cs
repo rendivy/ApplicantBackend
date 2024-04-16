@@ -1,6 +1,6 @@
 using AuthService.Domain.Entity;
 
-namespace AuthService.Presentation.Models;
+namespace AuthService.Presentation.Models.Account;
 
 public record UserRequest
 {

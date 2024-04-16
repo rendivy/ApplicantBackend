@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AuthService.Configuration;
 
-public class AuthConfiguration
+public static class AuthConfiguration
 {
     public static void AddJwt(IServiceCollection services, IConfiguration configuration)
     {

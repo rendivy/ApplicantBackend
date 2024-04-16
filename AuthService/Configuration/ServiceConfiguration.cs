@@ -8,6 +8,8 @@ public static class ServiceConfiguration
     public static void AddServices(IServiceCollection services)
     {
         services.AddScoped<AccountService>();
+        services.AddScoped<TokenService>();
+        services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IAccountService, AccountService>();
     }
 }

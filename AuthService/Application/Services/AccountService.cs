@@ -4,6 +4,8 @@ using AuthService.Domain.Interfaces;
 using AuthService.Infrastructure.Data.Database;
 using AuthService.Presentation.Mappers;
 using AuthService.Presentation.Models;
+using AuthService.Presentation.Models.Account;
+using AuthService.Presentation.Models.Token;
 using Common.CustomException;
 using Microsoft.AspNetCore.Identity;
 
@@ -57,7 +59,14 @@ public class AccountService(AuthDbContext authDbContext, UserManager<User> userM
         }
 
         await userManager.AddToRoleAsync(user, Roles.Applicant.ToString());
-        return jwtProvider.CreateTokenResponse(new Guid(user.Id), Roles.Applicant.ToString());
+        var response = jwtProvider.CreateTokenResponse(new Guid(user.Id), Roles.Applicant.ToString());
+        await authDbContext.UserRefreshTokens.AddAsync(new UserRefreshTokens
+        {
+            UserId = user.Id,
+            RefreshToken = response.RefreshToken
+        });
+        await authDbContext.SaveChangesAsync();
+        return response;
     }
 
     public async Task<TokenResponse> Login(LoginRequest loginRequest)
@@ -67,6 +76,13 @@ public class AccountService(AuthDbContext authDbContext, UserManager<User> userM
         var passwordCheck = await userManager.CheckPasswordAsync(user, loginRequest.Password);
         if (!passwordCheck) throw new InvalidPasswordException("Invalid password");
         var userRole = (await userManager.GetRolesAsync(user)).FirstOrDefault();
-        return jwtProvider.CreateTokenResponse(new Guid(user.Id), userRole);
+        var response = jwtProvider.CreateTokenResponse(new Guid(user.Id), userRole);
+        await authDbContext.UserRefreshTokens.AddAsync(new UserRefreshTokens
+        {
+            UserId = user.Id,
+            RefreshToken = response.RefreshToken
+        });
+        await authDbContext.SaveChangesAsync();
+        return response;
     }
 }

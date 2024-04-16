@@ -19,6 +19,10 @@ public class GlobalExceptionsMiddleware(RequestDelegate next)
         {
             await SetExceptionAsync(context, StatusCodes.Status404NotFound, exception.Message);
         }
+        catch (InvalidRefreshTokenException exception)
+        {
+           context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        }
         catch (UserDoesntHavePermissionException exception)
         {
             await SetExceptionAsync(context, StatusCodes.Status403Forbidden, exception.Message);
@@ -38,6 +42,11 @@ public class GlobalExceptionsMiddleware(RequestDelegate next)
             StatusCode = status,
             Message = message
         });
+    }
+    
+    private class UnauthorizedError
+    {
+        public int StatusCode { get; set; }
     }
 
     private class Error

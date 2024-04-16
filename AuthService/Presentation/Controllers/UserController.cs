@@ -2,6 +2,8 @@ using System.Security.Claims;
 using AuthService.Domain.Entity;
 using AuthService.Domain.Interfaces;
 using AuthService.Presentation.Models;
+using AuthService.Presentation.Models.Account;
+using AuthService.Presentation.Models.Token;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +12,7 @@ namespace AuthService.Presentation.Controllers;
 
 [ApiController]
 [Route("api/user")]
-public class UserController(IAccountService accountService) : Controller
+public class UserController(IAccountService accountService, ITokenService tokenService) : Controller
 {
     [HttpGet]
     [Route("info")]
@@ -19,6 +21,14 @@ public class UserController(IAccountService accountService) : Controller
     {
         var userId = User.FindFirstValue(ClaimTypes.Name);
         return await accountService.GetUserById(userId);
+    }
+    
+    [HttpPost]
+    [Route("refresh-token")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task<TokenResponse> RefreshToken(RefreshTokenRequest refreshTokenRequest)
+    {
+        return await tokenService.GetNewPairOfTokens(refreshTokenRequest.RefreshToken);
     }
 
 
