@@ -1,4 +1,3 @@
-using AuthService.Domain.Exception;
 using Common.CustomException;
 
 namespace AuthService.Infrastructure.Middleware;

@@ -1,7 +1,7 @@
 using System.Security.Claims;
+using AuthService.Application.Services.Models.Profile;
 using AuthService.Domain.Entity;
 using AuthService.Domain.Interfaces;
-using AuthService.Presentation.Models;
 using AuthService.Presentation.Models.Account;
 using AuthService.Presentation.Models.Token;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,17 +12,27 @@ namespace AuthService.Presentation.Controllers;
 
 [ApiController]
 [Route("api/user")]
-public class UserController(IAccountService accountService, ITokenService tokenService) : Controller
+public class UserController(IAccountService accountService, ITokenService tokenService, IProfileService profileService)
+    : Controller
 {
     [HttpGet]
-    [Route("info")]
+    [Route("profile")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<UserRequest> GetUserInfo()
     {
         var userId = User.FindFirstValue(ClaimTypes.Name);
-        return await accountService.GetUserById(userId);
+        return await profileService.GetUserProfile(userId);
     }
-    
+
+    [HttpPut]
+    [Route("profile")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task UpdateUserInfo(UpdateProfileRequest updateProfileRequest)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.Name);
+        await profileService.UpdateProfile(userId, updateProfileRequest);
+    }
+
     [HttpPost]
     [Route("refresh-token")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -34,6 +44,7 @@ public class UserController(IAccountService accountService, ITokenService tokenS
 
     [HttpPost]
     [Route("{userId}/role")]
+    //Думаю вынести этот метод в EnrollmentService, здесь сделан ради того, чтобы посмотреть работу с ролями
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task AddRole(string userId, Roles role)
     {

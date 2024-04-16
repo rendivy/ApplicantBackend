@@ -1,5 +1,4 @@
 using AuthService.Domain.Entity;
-using AuthService.Domain.Exception;
 using AuthService.Domain.Interfaces;
 using AuthService.Infrastructure.Data.Database;
 using AuthService.Presentation.Mappers;
