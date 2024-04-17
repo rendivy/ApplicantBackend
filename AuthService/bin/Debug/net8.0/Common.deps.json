@@ -6,15 +6,15 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "Auth.Core/1.0.0": {
+      "Common/1.0.0": {
         "runtime": {
-          "Auth.Core.dll": {}
+          "Common.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "Auth.Core/1.0.0": {
+    "Common/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

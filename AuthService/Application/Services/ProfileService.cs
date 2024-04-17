@@ -2,23 +2,37 @@ using AuthService.Application.Services.Models.Profile;
 using AuthService.Domain.Entity;
 using AuthService.Domain.Interfaces;
 using AuthService.Infrastructure.Data.Database;
+using AuthService.Infrastructure.Model;
 using AuthService.Presentation.Mappers;
 using AuthService.Presentation.Models.Account;
 using Common.Exception;
+using EasyNetQ;
 using Microsoft.AspNetCore.Identity;
 
 namespace AuthService.Application.Services;
 
-public class ProfileService(AuthDbContext authDbContext, UserManager<User> userManager, JwtProvider jwtProvider)
-    : IProfileService
+public class ProfileService : IProfileService
 {
+    private readonly IBus _bus;
+    private readonly UserManager<User> _userManager;
+
+
+    public ProfileService(
+        UserManager<User> userManager,
+        IBus bus)
+    {
+        _bus = bus;
+        _userManager = userManager;
+    }
+
+
     public async Task UpdateProfile(string userId, UpdateProfileRequest updateProfileRequest)
     {
-        var user = await userManager.FindByIdAsync(userId);
-        
+        var user = await _userManager.FindByIdAsync(userId);
+
         if (updateProfileRequest.Email != user.Email)
         {
-            var userEmailExists = await userManager.FindByEmailAsync(updateProfileRequest.Email);
+            var userEmailExists = await _userManager.FindByEmailAsync(updateProfileRequest.Email);
             if (userEmailExists != null)
                 throw new Exception("User with this email already exist");
             user.Email = updateProfileRequest.Email;
@@ -26,7 +40,7 @@ public class ProfileService(AuthDbContext authDbContext, UserManager<User> userM
 
         if (updateProfileRequest.PhoneNumber != user.PhoneNumber)
         {
-            var userPhoneNumberExists = await userManager.FindByEmailAsync(updateProfileRequest.PhoneNumber);
+            var userPhoneNumberExists = await _userManager.FindByEmailAsync(updateProfileRequest.PhoneNumber);
             if (userPhoneNumberExists != null)
                 throw new Exception("User with this phone number already exist");
             user.PhoneNumber = updateProfileRequest.PhoneNumber;
@@ -36,18 +50,19 @@ public class ProfileService(AuthDbContext authDbContext, UserManager<User> userM
         user.DateOfBirth = updateProfileRequest.DateOfBirth;
         user.Gender = updateProfileRequest.Gender;
         user.Citizenship = updateProfileRequest.Citizenship;
-        
-        await userManager.UpdateAsync(user);
 
+        await _bus.PubSub.PublishAsync(new RabbitMessage { Message = "Lol" }).ConfigureAwait(false);
+
+        await _userManager.UpdateAsync(user);
     }
 
     public async Task<UserRequest> GetUserProfile(string userId)
     {
         if (userId == null) throw new UserNotFoundException("User not found");
-        var user = await userManager.FindByIdAsync(userId);
+        var user = await _userManager.FindByIdAsync(userId);
         if (user == null) throw new UserNotFoundException("User not found");
 
-        var roles = await userManager.GetRolesAsync(user);
+        var roles = await _userManager.GetRolesAsync(user);
         return UserMapper.MapToDto(user, roles.FirstOrDefault());
     }
 }

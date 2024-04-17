@@ -1,15 +1,15 @@
 {
   "Version": 1,
-  "Hash": "O4Vy81CUHa+SICr/usMnqaefjSweWok+EBssELTkKEo=",
+  "Hash": "n43ZZqfgfcVvA7Mo67ZLLRXC2In46UE/1wfHrHMoMTc=",
   "Source": "AuthService",
   "BasePath": "_content/AuthService",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Auth.Core/Auth.Core.csproj",
+      "Identity": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Common/Common.csproj",
       "Version": 2,
-      "Source": "Auth.Core",
+      "Source": "Common",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
       "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
       "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",

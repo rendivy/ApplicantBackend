@@ -6,11 +6,15 @@ using AuthService.Presentation.Models;
 using AuthService.Presentation.Models.Account;
 using AuthService.Presentation.Models.Token;
 using Common.Exception;
+using EasyNetQ;
 using Microsoft.AspNetCore.Identity;
 
 namespace AuthService.Application.Services;
 
-public class AccountService(AuthDbContext authDbContext, UserManager<User> userManager, JwtProvider jwtProvider)
+public class AccountService(
+    AuthDbContext authDbContext,
+    UserManager<User> userManager,
+    JwtProvider jwtProvider)
     : IAccountService
 {
     public async Task<UserRequest> GetUserById(string? userId)

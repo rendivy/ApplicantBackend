@@ -3,8 +3,10 @@ using AuthService.Application.Services;
 using AuthService.Configuration;
 using AuthService.Domain.Entity;
 using AuthService.Infrastructure.Data.Database;
+using EasyNetQ;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -48,7 +50,8 @@ builder.Services.AddSwaggerGen(option =>
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorizationBuilder();
 builder.Services.AddControllers().AddJsonOptions(options =>
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));;
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+;
 builder.Services.AddDbContext<AuthDbContext>(
     it => it.UseNpgsql(builder.Configuration.GetConnectionString("AuthDatabaseConnection")));
 builder.Services.AddIdentity<User, IdentityRole>()
@@ -57,6 +60,7 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 AuthConfiguration.AddJwt(builder.Services, builder.Configuration);
 ServiceConfiguration.AddServices(builder.Services);
+builder.Services.AddSingleton<IBus>(RabbitHutch.CreateBus("host=localhost;username=rmuser;password=rmpassword"));
 
 builder.Services.AddScoped<JwtProvider>();
 
@@ -77,6 +81,9 @@ using (var scope = app.Services.CreateScope())
         }
     }
 }
+
+
+
 
 if (app.Environment.IsDevelopment())
 {
