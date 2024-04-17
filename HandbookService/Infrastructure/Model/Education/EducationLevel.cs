@@ -1,4 +1,4 @@
-namespace HandbookService.Infrastructure.Model;
+namespace HandbookService.Infrastructure.Model.Education;
 
 public class EducationLevel
 {
