@@ -1,0 +1,11 @@
+E:\RiderProjects\admission\AdmissionBackend\Messages\bin\Debug\net8.0\Messages.deps.json
+E:\RiderProjects\admission\AdmissionBackend\Messages\bin\Debug\net8.0\Messages.dll
+E:\RiderProjects\admission\AdmissionBackend\Messages\bin\Debug\net8.0\Messages.pdb
+E:\RiderProjects\admission\AdmissionBackend\Messages\obj\Debug\net8.0\Messages.GeneratedMSBuildEditorConfig.editorconfig
+E:\RiderProjects\admission\AdmissionBackend\Messages\obj\Debug\net8.0\Messages.AssemblyInfoInputs.cache
+E:\RiderProjects\admission\AdmissionBackend\Messages\obj\Debug\net8.0\Messages.AssemblyInfo.cs
+E:\RiderProjects\admission\AdmissionBackend\Messages\obj\Debug\net8.0\Messages.csproj.CoreCompileInputs.cache
+E:\RiderProjects\admission\AdmissionBackend\Messages\obj\Debug\net8.0\Messages.dll
+E:\RiderProjects\admission\AdmissionBackend\Messages\obj\Debug\net8.0\refint\Messages.dll
+E:\RiderProjects\admission\AdmissionBackend\Messages\obj\Debug\net8.0\Messages.pdb
+E:\RiderProjects\admission\AdmissionBackend\Messages\obj\Debug\net8.0\ref\Messages.dll

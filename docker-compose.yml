@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.13.1-management
+    hostname: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=rmuser
+      - RABBITMQ_DEFAULT_PASS=rmpassword
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+  
+  maildev:
+    image: maildev/maildev
+    restart: always
+    environment:
+      - MAILDEV_WEB_PORT=1080
+      - MAILDEV_SMTP_PORT=1025
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
