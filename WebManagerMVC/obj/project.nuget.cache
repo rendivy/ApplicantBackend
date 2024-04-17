@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "iZ0Gsci8x2ye0B796pX12l+uVO00Ss0ykv69mAqUPC7gy50S2lB/A4YBkyPti0x2kksIN1Zsh8GDGtFsgLTB4Q==",
+  "dgSpecHash": "GauSBV9jHacBaQb5ki10Wdm7kWZwAtroxi79dTHsIO1tqQ9CqUf9FxQO3vZ+Wh8uqYKaSzj5lNr0PSr4oRIC/Q==",
   "success": true,
   "projectFilePath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/WebManagerMVC/WebManagerMVC.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/yuriyyangel/.nuget/packages/easynetq/7.8.0/easynetq.7.8.0.nupkg.sha512",
+    "/Users/yuriyyangel/.nuget/packages/rabbitmq.client/6.8.1/rabbitmq.client.6.8.1.nupkg.sha512",
+    "/Users/yuriyyangel/.nuget/packages/system.memory/4.5.5/system.memory.4.5.5.nupkg.sha512",
+    "/Users/yuriyyangel/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

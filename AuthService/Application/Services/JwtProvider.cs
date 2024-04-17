@@ -2,8 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using AuthService.Domain.Entity;
-using AuthService.Presentation.Models;
 using AuthService.Presentation.Models.Token;
 using Microsoft.IdentityModel.Tokens;
 
