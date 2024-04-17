@@ -1,0 +1,7 @@
+namespace HandbookService.Domain.Model;
+
+public class EducationLevelResponse
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+}
