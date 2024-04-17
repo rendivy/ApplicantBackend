@@ -26,6 +26,10 @@ public class GlobalExceptionsMiddleware(RequestDelegate next)
         {
             await SetExceptionAsync(context, StatusCodes.Status403Forbidden, exception.Message);
         }
+        catch (Exception exception)
+        {
+            await SetExceptionAsync(context, StatusCodes.Status400BadRequest, exception.Message);
+        }
     }
 
 

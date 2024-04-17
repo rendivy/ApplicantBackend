@@ -4,14 +4,14 @@
     "/Users/yuriyyangel/RiderProjects/ApplicantBackend/NotificationService/NotificationService.csproj": {}
   },
   "projects": {
-    "/Users/yuriyyangel/RiderProjects/ApplicantBackend/NotificationService/NotificationService.csproj": {
+    "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Common/Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/NotificationService/NotificationService.csproj",
-        "projectName": "NotificationService",
-        "projectPath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/NotificationService/NotificationService.csproj",
+        "projectUniqueName": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Common/Common.csproj",
+        "projectName": "Common",
+        "projectPath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Common/Common.csproj",
         "packagesPath": "/Users/yuriyyangel/.nuget/packages/",
-        "outputPath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/NotificationService/obj/",
+        "outputPath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Common/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/yuriyyangel/.nuget/NuGet/NuGet.Config"
@@ -37,6 +37,66 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.203/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/yuriyyangel/RiderProjects/ApplicantBackend/NotificationService/NotificationService.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/NotificationService/NotificationService.csproj",
+        "projectName": "NotificationService",
+        "projectPath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/NotificationService/NotificationService.csproj",
+        "packagesPath": "/Users/yuriyyangel/.nuget/packages/",
+        "outputPath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/NotificationService/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/yuriyyangel/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Common/Common.csproj": {
+                "projectPath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Common/Common.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "EasyNetQ": {
               "target": "Package",
@@ -45,6 +105,10 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.3, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

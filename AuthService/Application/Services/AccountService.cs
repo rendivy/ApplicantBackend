@@ -6,6 +6,7 @@ using AuthService.Presentation.Models;
 using AuthService.Presentation.Models.Account;
 using AuthService.Presentation.Models.Token;
 using Common.Exception;
+using Common.RabbitModel.Email;
 using EasyNetQ;
 using Microsoft.AspNetCore.Identity;
 
@@ -14,7 +15,8 @@ namespace AuthService.Application.Services;
 public class AccountService(
     AuthDbContext authDbContext,
     UserManager<User> userManager,
-    JwtProvider jwtProvider)
+    JwtProvider jwtProvider,
+    IBus bus)
     : IAccountService
 {
     public async Task<UserRequest> GetUserById(string? userId)
@@ -86,6 +88,13 @@ public class AccountService(
             RefreshToken = response.RefreshToken
         });
         await authDbContext.SaveChangesAsync();
+        await bus.PubSub.PublishAsync(new EmailResponse
+        {
+            To = user.Email,
+            From = "tsu@mail.ru",
+            Subject = "Кто-то вошел в ваш аккаунт",
+            Message = "Если это были вы, пожалуйста, проигнорируйте это письмо. Если нет, пожалуйста, свяжитесь с нами."
+        });
         return response;
     }
 }

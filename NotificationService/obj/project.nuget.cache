@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "VV+rW5TPapEDNoZkRAlXzuxoxsJUeUHaZGMDa4tdjI7364pan57hCe1L4d0hwOCexoltrWNig8aCPikDhMH85A==",
+  "dgSpecHash": "7e0FyI9l3qXbMAjJwAc/C+G5kv6DxY7I6uLYB+8bs6G2JuDs8vSP3nNZQK4aZGaVrQsSrWVKE66LTl8NxxUX2w==",
   "success": true,
   "projectFilePath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/NotificationService/NotificationService.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "/Users/yuriyyangel/.nuget/packages/microsoft.aspnetcore.openapi/8.0.3/microsoft.aspnetcore.openapi.8.0.3.nupkg.sha512",
     "/Users/yuriyyangel/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "/Users/yuriyyangel/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
+    "/Users/yuriyyangel/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/Users/yuriyyangel/.nuget/packages/rabbitmq.client/6.8.1/rabbitmq.client.6.8.1.nupkg.sha512",
     "/Users/yuriyyangel/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "/Users/yuriyyangel/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",

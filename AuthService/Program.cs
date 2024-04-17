@@ -6,8 +6,6 @@ using AuthService.Infrastructure.Data.Database;
 using EasyNetQ;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,7 +58,7 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 AuthConfiguration.AddJwt(builder.Services, builder.Configuration);
 ServiceConfiguration.AddServices(builder.Services);
-builder.Services.AddSingleton<IBus>(RabbitHutch.CreateBus("host=localhost;username=rmuser;password=rmpassword"));
+builder.Services.AddSingleton<IBus>(RabbitHutch.CreateBus(builder.Configuration.GetConnectionString("EasyNetQ")));
 
 builder.Services.AddScoped<JwtProvider>();
 
@@ -81,8 +79,6 @@ using (var scope = app.Services.CreateScope())
         }
     }
 }
-
-
 
 
 if (app.Environment.IsDevelopment())

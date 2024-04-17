@@ -1,8 +1,6 @@
 using AuthService.Application.Services.Models.Profile;
 using AuthService.Domain.Entity;
 using AuthService.Domain.Interfaces;
-using AuthService.Infrastructure.Data.Database;
-using AuthService.Infrastructure.Model;
 using AuthService.Presentation.Mappers;
 using AuthService.Presentation.Models.Account;
 using Common.Exception;
@@ -50,9 +48,6 @@ public class ProfileService : IProfileService
         user.DateOfBirth = updateProfileRequest.DateOfBirth;
         user.Gender = updateProfileRequest.Gender;
         user.Citizenship = updateProfileRequest.Citizenship;
-
-        await _bus.PubSub.PublishAsync(new RabbitMessage { Message = "Lol" }).ConfigureAwait(false);
-
         await _userManager.UpdateAsync(user);
     }
 

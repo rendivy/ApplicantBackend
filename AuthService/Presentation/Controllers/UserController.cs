@@ -2,7 +2,6 @@ using System.Security.Claims;
 using AuthService.Application.Services.Models.Profile;
 using AuthService.Domain.Entity;
 using AuthService.Domain.Interfaces;
-using AuthService.Infrastructure.Model;
 using AuthService.Presentation.Models.Account;
 using AuthService.Presentation.Models.Token;
 using EasyNetQ;
@@ -40,17 +39,7 @@ public class UserController(
         await profileService.UpdateProfile(userId, updateProfileRequest);
     }
 
-    [HttpPut]
-    [Route("test")]
-    public async Task Test()
-    {
-        bus.PubSub.Subscribe<RabbitMessage>("userUpdated", msg =>
-        {
-            Console.WriteLine(msg.Message);
-        });
-    }
-
-
+    
     [HttpPost]
     [Route("refresh-token")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -62,7 +51,6 @@ public class UserController(
 
     [HttpPost]
     [Route("{userId}/role")]
-    //Думаю вынести этот метод в EnrollmentService, здесь сделан ради того, чтобы посмотреть работу с ролями
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task AddRole(string userId, Roles role)
     {
