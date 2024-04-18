@@ -1,4 +1,4 @@
-namespace HandbookService.Infrastructure.Model;
+namespace HandbookService.Domain.Model;
 
 public enum HandbookType
 {

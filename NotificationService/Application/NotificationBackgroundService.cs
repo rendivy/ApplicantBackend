@@ -11,7 +11,8 @@ public class NotificationBackgroundService(IBus bus) : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await bus.PubSub.SubscribeAsync<EmailResponse>("notification", CreateNotificationBody, stoppingToken);
+        await bus.PubSub.SubscribeAsync<EmailResponse>(
+            "notification", CreateNotificationBody, stoppingToken);
     }
 
 
