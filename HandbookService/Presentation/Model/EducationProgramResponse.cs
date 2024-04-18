@@ -1,4 +1,6 @@
-namespace HandbookService.Domain.Model;
+using HandbookService.Domain.Model;
+
+namespace HandbookService.Presentation.Model;
 
 public class EducationProgramResponse
 {

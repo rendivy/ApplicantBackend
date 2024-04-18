@@ -1,3 +1,5 @@
+using HandbookService.Presentation.Model;
+
 namespace HandbookService.Domain.Model.Pagination;
 
 public class PaginationResponse
