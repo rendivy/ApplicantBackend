@@ -7,7 +7,6 @@ using HandbookService.Domain.Service;
 using HandbookService.Infrastructure.Data;
 using HandbookService.Presentation.Mappers;
 using HandbookService.Presentation.Model;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace HandbookService.Infrastructure.Service;

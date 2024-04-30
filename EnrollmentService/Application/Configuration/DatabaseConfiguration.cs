@@ -10,13 +10,4 @@ public static class DatabaseConfiguration
         services.AddDbContext<EnrollmentDatabaseContext>(
             it => it.UseNpgsql(configuration.GetConnectionString("EnrollmentDatabaseConnection")));
     }
-
-    public static void AddAutoMigrations(IApplicationBuilder app)
-    {
-        using (var scope = app.ApplicationServices.CreateScope())
-        {
-            var context = scope.ServiceProvider.GetRequiredService<EnrollmentDatabaseContext>();
-            context.Database.MigrateAsync();
-        }
-    }
 }

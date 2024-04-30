@@ -14,7 +14,6 @@ DatabaseConfiguration.AddDatabaseContext(builder.Services, builder.Configuration
 
 var app = builder.Build();
 
-DatabaseConfiguration.AddAutoMigrations(app);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
