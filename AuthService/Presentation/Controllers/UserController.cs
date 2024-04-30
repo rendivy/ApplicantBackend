@@ -18,8 +18,7 @@ public class UserController(
     ITokenService tokenService,
     IProfileService profileService,
     IBus bus
-)
-    : Controller
+) : Controller
 {
     [HttpGet]
     [Route("profile")]

@@ -64,7 +64,8 @@ public class HandbookService : IHandbookService
             await UpdateEducationLevels();
             await UpdateDocumentTypes();
             await UpdatePrograms();
-
+//синхронно делать плохо
+//транзакция излишняя
             await _handbookDbContext.SaveChangesAsync();
 
             newImport.Status = ImportStatus.Finished;
