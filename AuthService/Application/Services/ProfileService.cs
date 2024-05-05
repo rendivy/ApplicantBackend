@@ -1,8 +1,8 @@
-using AuthService.Application.Services.Models.Profile;
 using AuthService.Domain.Entity;
 using AuthService.Domain.Interfaces;
 using AuthService.Presentation.Mappers;
 using AuthService.Presentation.Models.Account;
+using AuthService.Presentation.Models.Profile;
 using Common.Exception;
 using EasyNetQ;
 using Microsoft.AspNetCore.Identity;

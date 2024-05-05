@@ -1,8 +1,8 @@
 using System.Security.Claims;
-using AuthService.Application.Services.Models.Profile;
 using AuthService.Domain.Entity;
 using AuthService.Domain.Interfaces;
 using AuthService.Presentation.Models.Account;
+using AuthService.Presentation.Models.Profile;
 using AuthService.Presentation.Models.Token;
 using EasyNetQ;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

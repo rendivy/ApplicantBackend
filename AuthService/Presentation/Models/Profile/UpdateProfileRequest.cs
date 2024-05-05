@@ -1,6 +1,6 @@
 using AuthService.Domain.Entity;
 
-namespace AuthService.Application.Services.Models.Profile;
+namespace AuthService.Presentation.Models.Profile;
 
 public record UpdateProfileRequest
 {

@@ -1,5 +1,5 @@
-using AuthService.Application.Services.Models.Profile;
 using AuthService.Presentation.Models.Account;
+using AuthService.Presentation.Models.Profile;
 
 namespace AuthService.Domain.Interfaces;
 
