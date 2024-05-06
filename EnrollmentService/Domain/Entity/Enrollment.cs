@@ -1,4 +1,4 @@
-using AuthService.Domain.Entity;
+using System.ComponentModel.DataAnnotations;
 using HandbookService.Domain.Model.Education;
 
 namespace EnrollmentService.Domain.Entity;
@@ -7,11 +7,11 @@ namespace EnrollmentService.Domain.Entity;
 //запрос программы из HandbookService
 public class Enrollment
 {
-    public Guid Id { get; set; }
-    public Guid ApplicantId { get; set; }
-    public User Applicant { get; set; }
-    public Guid ProgramId { get; set; }
-    public EducationProgram Program { get; set; }
-    public EnrollmentPriority EnrollmentPriority { get; set; }
-    public EnrollmentStatus EnrollmentStatus { get; set; }
+    [Key] public Guid Id { get; set; }
+    [Required] public Guid ApplicantId { get; set; }
+    [Required] public Applicant Applicant { get; set; }
+    [Required] public Guid ProgramId { get; set; }
+    [Required] public EnrollmentProgram EnrollmentProgram { get; set; }
+    [Required] public EnrollmentPriority EnrollmentPriority { get; set; }
+    [Required] public EnrollmentStatus EnrollmentStatus { get; set; }
 }
