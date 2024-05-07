@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HandbookService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2608ea0b78434566381f4078b7119fe59b32713a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f9c6f1dee78e3a84f4516ecfe07ea42f97940ebb")]
 [assembly: System.Reflection.AssemblyProductAttribute("HandbookService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HandbookService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

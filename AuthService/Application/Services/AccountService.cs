@@ -15,6 +15,7 @@ namespace AuthService.Application.Services;
 public class AccountService(
     AuthDbContext authDbContext,
     UserManager<User> userManager,
+    RedisDatabaseContext redisRepository,
     JwtProvider jwtProvider,
     IBus bus)
     : IAccountService
@@ -65,12 +66,7 @@ public class AccountService(
 
         await userManager.AddToRoleAsync(user, Roles.Applicant.ToString());
         var response = jwtProvider.CreateTokenResponse(new Guid(user.Id), Roles.Applicant.ToString());
-        await authDbContext.UserRefreshTokens.AddAsync(new UserRefreshTokens
-        {
-            UserId = user.Id,
-            RefreshToken = response.RefreshToken
-        });
-        await authDbContext.SaveChangesAsync();
+        await redisRepository.AddRefreshToken(response.RefreshToken, user.Id);
         return response;
     }
 
@@ -82,12 +78,7 @@ public class AccountService(
         if (!passwordCheck) throw new InvalidPasswordException("Invalid password");
         var userRole = (await userManager.GetRolesAsync(user)).FirstOrDefault();
         var response = jwtProvider.CreateTokenResponse(new Guid(user.Id), userRole);
-        await authDbContext.UserRefreshTokens.AddAsync(new UserRefreshTokens
-        {
-            UserId = user.Id,
-            RefreshToken = response.RefreshToken
-        });
-        await authDbContext.SaveChangesAsync();
+        await redisRepository.AddRefreshToken(response.RefreshToken, user.Id);
         await bus.PubSub.PublishAsync(new EmailResponse
         {
             To = user.Email,

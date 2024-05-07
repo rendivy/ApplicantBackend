@@ -1,5 +1,6 @@
 using AuthService.Application.Services;
 using AuthService.Domain.Interfaces;
+using AuthService.Infrastructure.Data.Database;
 
 namespace AuthService.Configuration;
 

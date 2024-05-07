@@ -10,7 +10,13 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
-      
+  
+  redis:
+    image: redis:7.2.4
+    restart: always
+    ports:
+      - "6379:6379"
+  
   maildev:
     image: maildev/maildev
     restart: always

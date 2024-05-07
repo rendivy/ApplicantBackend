@@ -153,3 +153,7 @@
 /Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Common.dll
 /Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Common.pdb
 /Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Newtonsoft.Json.dll
+/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/NetTopologySuite.dll
+/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/NRedisStack.dll
+/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/Pipelines.Sockets.Unofficial.dll
+/Users/yuriyyangel/RiderProjects/ApplicantBackend/AuthService/bin/Debug/net8.0/StackExchange.Redis.dll

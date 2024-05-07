@@ -41,7 +41,6 @@ public class UserController(
     
     [HttpPost]
     [Route("refresh-token")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<TokenResponse> RefreshToken(RefreshTokenRequest refreshTokenRequest)
     {
         return await tokenService.GetNewPairOfTokens(refreshTokenRequest.RefreshToken);

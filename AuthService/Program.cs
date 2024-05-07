@@ -49,7 +49,8 @@ builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerSche
 builder.Services.AddAuthorizationBuilder();
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-;
+builder.Services.AddSingleton<RedisDatabaseContext>(
+    new RedisDatabaseContext(builder.Configuration.GetConnectionString("RedisDatabase")));
 builder.Services.AddDbContext<AuthDbContext>(
     it => it.UseNpgsql(builder.Configuration.GetConnectionString("AuthDatabaseConnection")));
 builder.Services.AddIdentity<User, IdentityRole>()
