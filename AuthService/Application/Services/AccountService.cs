@@ -67,6 +67,17 @@ public class AccountService(
 
         await userManager.AddToRoleAsync(user, Roles.Applicant.ToString());
         var response = jwtProvider.CreateTokenResponse(new Guid(user.Id), Roles.Applicant.ToString());
+        await bus.PubSub.PublishAsync(new ApplicantResponse
+            {
+                Email = user.Email,
+                FullName = user.FullName,
+                Id = new Guid(user.Id),
+                DateOfBirth = user.DateOfBirth,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                Citizenship = user.Citizenship
+            }
+        );
         await redisRepository.AddRefreshToken(response.RefreshToken, user.Id);
         return response;
     }
@@ -80,17 +91,6 @@ public class AccountService(
         var userRole = (await userManager.GetRolesAsync(user)).FirstOrDefault();
         var response = jwtProvider.CreateTokenResponse(new Guid(user.Id), userRole);
         await redisRepository.AddRefreshToken(response.RefreshToken, user.Id);
-        await bus.PubSub.PublishAsync(new ApplicantResponse
-            {
-                Email = user.Email,
-                FullName = user.FullName,
-                Id = new Guid(user.Id),
-                DateOfBirth = user.DateOfBirth,
-                PhoneNumber = user.PhoneNumber,
-                Gender = user.Gender,
-                Citizenship = user.Citizenship
-            }
-        );
         return response;
     }
 }
