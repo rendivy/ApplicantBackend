@@ -1,17 +1,16 @@
 using System.ComponentModel.DataAnnotations;
-using HandbookService.Domain.Model.Education;
+using Common.BaseModel;
+using EnrollmentService.Domain.Entity.Stuff;
 
 namespace EnrollmentService.Domain.Entity;
 
-//клонировать абитуриента из AuthService 
-//запрос программы из HandbookService
-public class Enrollment
+public class Enrollment : BaseEntity
 {
-    [Key] public Guid Id { get; set; }
-    [Required] public Guid ApplicantId { get; set; }
-    [Required] public Applicant Applicant { get; set; }
-    [Required] public Guid ProgramId { get; set; }
-    [Required] public EnrollmentProgram EnrollmentProgram { get; set; }
-    [Required] public EnrollmentPriority EnrollmentPriority { get; set; }
-    [Required] public EnrollmentStatus EnrollmentStatus { get; set; }
+    public required Guid ApplicantId { get; set; }
+    public required Applicant Applicant { get; set; }
+    public required IEnumerable<EnrollmentPrograms> EnrollmentPrograms { get; set; }
+    public required DateTime LastUpdate { get; set; }
+    public Guid? ManagerId { get; set; }
+    public Manager? Manager { get; set; }
 }
+//TODO: клонировать абитуриента из AuthService, запрос программы из HandbookService

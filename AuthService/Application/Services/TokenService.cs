@@ -1,11 +1,9 @@
 using AuthService.Domain.Entity;
 using AuthService.Domain.Interfaces;
 using AuthService.Infrastructure.Data.Database;
-using AuthService.Presentation.Models;
 using AuthService.Presentation.Models.Token;
 using Common.Exception;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.Application.Services;
 

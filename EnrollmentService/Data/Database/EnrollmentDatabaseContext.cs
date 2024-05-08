@@ -7,10 +7,11 @@ namespace EnrollmentService.Data.Database;
 public class EnrollmentDatabaseContext(DbContextOptions<EnrollmentDatabaseContext> options) : DbContext(options)
 {
     public DbSet<Enrollment> Enrollment { get; set; }
-    public DbSet<EnrollmentProgram> EnrollmentProgram { get; set; }
+    public DbSet<AdmissionProgram> Program { get; set; }
     public DbSet<Document> Document { get; set; }
     public DbSet<Passport> Passport { get; set; }
     public DbSet<EducationDocument> EducationDocument { get; set; }
+    public DbSet<EnrollmentPrograms> EnrollmentPrograms { get; set; }
     public DbSet<Applicant> Applicant { get; set; }
 
 

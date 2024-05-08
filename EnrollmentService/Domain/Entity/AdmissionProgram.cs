@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EnrollmentService.Domain.Entity;
 
-public class EnrollmentProgram
+public class AdmissionProgram
 {
     [Key] public Guid Id { get; set; }
     public DateTime CreateTime { get; set; }
