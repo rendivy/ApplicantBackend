@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Common.BaseModel;
 using Microsoft.AspNetCore.Identity;
 
 namespace AuthService.Domain.Entity;

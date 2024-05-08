@@ -7,6 +7,7 @@ using AuthService.Presentation.Models.Account;
 using AuthService.Presentation.Models.Token;
 using Common.Exception;
 using Common.RabbitModel.Email;
+using Common.RabbitModel.User;
 using EasyNetQ;
 using Microsoft.AspNetCore.Identity;
 
@@ -79,13 +80,17 @@ public class AccountService(
         var userRole = (await userManager.GetRolesAsync(user)).FirstOrDefault();
         var response = jwtProvider.CreateTokenResponse(new Guid(user.Id), userRole);
         await redisRepository.AddRefreshToken(response.RefreshToken, user.Id);
-        await bus.PubSub.PublishAsync(new EmailResponse
-        {
-            To = user.Email,
-            From = "tsu@mail.ru",
-            Subject = "Кто-то вошел в ваш аккаунт",
-            Message = "Если это были вы, пожалуйста, проигнорируйте это письмо. Если нет, пожалуйста, свяжитесь с нами."
-        });
+        await bus.PubSub.PublishAsync(new ApplicantResponse
+            {
+                Email = user.Email,
+                FullName = user.FullName,
+                Id = new Guid(user.Id),
+                DateOfBirth = user.DateOfBirth,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                Citizenship = user.Citizenship
+            }
+        );
         return response;
     }
 }

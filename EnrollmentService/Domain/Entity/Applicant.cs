@@ -1,13 +1,13 @@
-using System.ComponentModel.DataAnnotations;
-using AuthService.Domain.Entity;
+using Common.BaseModel;
 
 namespace EnrollmentService.Domain.Entity;
 
-public class Applicant
+public class Applicant : BaseEntity
 {
-    [Key] public Guid Id { get; set; }
-    [Required] public DateOnly DateOfBirth { get; set; }
-    [Required] public Gender Gender { get; set; }
-    [Required] public string FullName { get; set; }
-    [Required] public string Citizenship { get; set; }
+    public required DateOnly DateOfBirth { get; set; }
+    public required Gender Gender { get; set; }
+    public required string Email { get; set; }
+    public required string PhoneNumber { get; set; }
+    public required string FullName { get; set; }
+    public required string Citizenship { get; set; }
 }

@@ -20,7 +20,7 @@
 
     <ItemGroup>
       <Folder Include="Application\Middleware\" />
-      <Folder Include="Domain\Services\" />
+      <Folder Include="Domain\Service\" />
       <Folder Include="Migrations\" />
     </ItemGroup>
 

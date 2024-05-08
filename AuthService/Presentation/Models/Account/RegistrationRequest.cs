@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using AuthService.Domain.Entity;
+using Common.BaseModel;
 
 namespace AuthService.Presentation.Models.Account;
 

@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using Common.BaseModel;
 
 namespace EnrollmentService.Domain.Entity.Stuff;
 
-public class Manager
+public class Manager : BaseEntity
 {
-    public Guid Id { get; set; }
-    public string FullName { get; set; }
-    [EmailAddress]
-    public string Email { get; set; }
+    [MinLength(5)] 
+    public required string FullName { get; set; }
+    [EmailAddress] 
+    public required string Email { get; set; }
 }

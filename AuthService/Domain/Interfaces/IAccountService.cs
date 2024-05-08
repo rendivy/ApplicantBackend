@@ -1,5 +1,4 @@
 using AuthService.Domain.Entity;
-using AuthService.Presentation.Models;
 using AuthService.Presentation.Models.Account;
 using AuthService.Presentation.Models.Token;
 

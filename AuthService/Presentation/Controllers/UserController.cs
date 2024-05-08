@@ -4,7 +4,6 @@ using AuthService.Domain.Interfaces;
 using AuthService.Presentation.Models.Account;
 using AuthService.Presentation.Models.Profile;
 using AuthService.Presentation.Models.Token;
-using EasyNetQ;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,8 +15,7 @@ namespace AuthService.Presentation.Controllers;
 public class UserController(
     IAccountService accountService,
     ITokenService tokenService,
-    IProfileService profileService,
-    IBus bus
+    IProfileService profileService
 ) : Controller
 {
     [HttpGet]

@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Common.BaseModel;
 using EnrollmentService.Domain.Entity.Stuff;
 

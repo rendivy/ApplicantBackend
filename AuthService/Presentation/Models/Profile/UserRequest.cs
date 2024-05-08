@@ -1,4 +1,5 @@
 using AuthService.Domain.Entity;
+using Common.BaseModel;
 
 namespace AuthService.Presentation.Models.Account;
 

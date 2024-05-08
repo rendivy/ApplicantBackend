@@ -1,7 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Common.BaseModel;
-using EnrollmentService.Domain.Entity.Stuff;
 
 namespace EnrollmentService.Domain.Entity;
 
