@@ -10,7 +10,7 @@ public class HandbookDbContext(DbContextOptions<HandbookDbContext> options) : Db
     public DbSet<EducationLevel> EducationLevel { get; set; }
     public DbSet<EducationDocumentType> DocumentType { get; set; }
     public DbSet<Faculty> Faculty { get; set; }
-    public DbSet<EducationProgram> Program { get; set; }
+    public DbSet<EducationProgram?> Program { get; set; }
     public DbSet<Import> HandbookImport { get; set; }
     public DbSet<NextEducationLevel> NextEducationLevel { get; set; }
 

@@ -288,7 +288,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Common/Common.csproj": {
+                "projectPath": "/Users/yuriyyangel/RiderProjects/ApplicantBackend/Common/Common.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

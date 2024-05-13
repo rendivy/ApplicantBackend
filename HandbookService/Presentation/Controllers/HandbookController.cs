@@ -1,3 +1,4 @@
+using HandbookService.Domain.Model.Education;
 using HandbookService.Domain.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,5 +14,13 @@ public class HandbookController(IHandbookService handbookService) : Controller
     {
         await handbookService.ImportAllHandbookDataAsync();
         return Ok();
+    }
+
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<IActionResult> GetProgramById(Guid id)
+    {
+        EducationProgram? program = await handbookService.GetProgramByIdAsync(id);
+        return Ok(program);
     }
 }

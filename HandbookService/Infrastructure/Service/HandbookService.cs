@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Text;
+using Common.Exception;
 using HandbookService.Domain.Model;
 using HandbookService.Domain.Model.Education;
 using HandbookService.Domain.Model.Pagination;
@@ -99,6 +100,7 @@ public class HandbookService : IHandbookService
                 await _handbookDbContext.Set<TEntity>().AddAsync(entity);
             }
         }
+
         await _handbookDbContext.SaveChangesAsync();
     }
 
@@ -158,6 +160,17 @@ public class HandbookService : IHandbookService
     public async Task ImportAllHandbookDataAsync()
     {
         await ImportExternalDictionary();
+    }
+
+    public async Task<EducationProgram?> GetProgramByIdAsync(Guid id)
+    {
+        var educationProgram = await _handbookDbContext.Program.FindAsync(id);
+        if (educationProgram != null)
+        {
+            return educationProgram;
+        }
+
+        throw new ProgramNotFoundException("Program with this id not found");
     }
 
     public Task UpdateAllHandbookDataAsync()
