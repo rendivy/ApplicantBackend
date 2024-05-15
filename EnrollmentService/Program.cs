@@ -2,6 +2,7 @@ using EasyNetQ;
 using EnrollmentService.Application.BackgroundWorkers;
 using EnrollmentService.Application.Configuration;
 using EnrollmentService.Data.Database;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,11 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthorizationBuilder();
 builder.Services.AddHttpClient();
 DatabaseConfiguration.AddDatabaseContext(builder.Services, builder.Configuration);
 builder.Services.AddSingleton(RabbitHutch.CreateBus(builder.Configuration.GetConnectionString("EasyNetQ")));
 builder.Services.ConfigureApplicantServices();
 builder.Services.AddHostedService<UserCreatedMessageConsumer>();
+JwtConfiguration.AddJwt(builder.Services, builder.Configuration);
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

@@ -34,7 +34,7 @@ public class AdmissionService : IAdmissionService
             Id = enrollmentId,
             ApplicantId = applicantId,
             Applicant = applicant,
-            LastUpdate = DateTime.Now,
+            LastUpdate = DateTime.Now.ToUniversalTime(),
             EnrollmentPrograms = new List<EnrollmentPrograms>()
         };
 
@@ -44,7 +44,7 @@ public class AdmissionService : IAdmissionService
             if (admissionProgram == null)
             {
                 var response =
-                    await _httpClient.GetAsync($"http://handbookservice/api/handbook/{program.AdmissionProgramId}");
+                    await _httpClient.GetAsync($"http://localhost:5178/api/handbook/{program.AdmissionProgramId}");
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
