@@ -5,10 +5,8 @@ namespace EnrollmentService.Domain.UseCase;
 
 public class CreateApplicantUseCase(ApplicantRepository applicantRepository)
 {
-    private readonly ApplicantRepository _applicantRepository = applicantRepository;
-
     public async Task Execute(Applicant applicant)
     {
-        await _applicantRepository.CreateApplicant(applicant);
+        await applicantRepository.CreateApplicant(applicant);
     }
 }

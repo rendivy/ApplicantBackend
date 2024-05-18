@@ -1,6 +1,8 @@
 using System.Text.Json.Serialization;
+using EasyNetQ;
 using HandbookService.Domain.Service;
 using HandbookService.Infrastructure.Data;
+using HandbookService.Presentation.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -14,8 +16,9 @@ builder.Services.AddDbContext<HandbookDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("HandbookDatabase"));
 });
-
 builder.Services.AddScoped<IHandbookService, HandbookService.Infrastructure.Service.HandbookService>();
+builder.Services.AddSingleton(RabbitHutch.CreateBus(builder.Configuration.GetConnectionString("EasyNetQ")));
+builder.Services.QueueSubscribe(builder.Configuration);
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {

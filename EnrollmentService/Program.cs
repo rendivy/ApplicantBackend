@@ -15,7 +15,6 @@ builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerSche
 builder.Services.AddAuthorizationBuilder();
 builder.Services.AddHttpClient();
 DatabaseConfiguration.AddDatabaseContext(builder.Services, builder.Configuration);
-builder.Services.AddSingleton(RabbitHutch.CreateBus(builder.Configuration.GetConnectionString("EasyNetQ")));
 builder.Services.ConfigureApplicantServices();
 builder.Services.AddHostedService<UserCreatedMessageConsumer>();
 JwtConfiguration.AddJwt(builder.Services, builder.Configuration);
@@ -34,7 +33,7 @@ using (var scope = app.Services.CreateScope())
     await context.Database.MigrateAsync();
 }
 
-
+app.UseMiddleware<EnrollmentExceptionMiddleware>();
 app.MapControllers();
 app.UseHttpsRedirection();
 app.Run();

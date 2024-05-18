@@ -27,4 +27,14 @@ public class EnrollmentController : Controller
         await admissionService.CreateAdmission(request, new Guid(userId));
         return Ok();
     }
+
+    [HttpPut]
+    [Route("api/enrollment")]
+    [Authorize]
+    public async Task<IActionResult> EditEnrollment(AdmissionRequest request)
+    {
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
+        await admissionService.EditAdmission(request, new Guid(userId));
+        return Ok();
+    }
 }
