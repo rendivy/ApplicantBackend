@@ -9,6 +9,7 @@ public class Enrollment : BaseEntity
     public required Applicant Applicant { get; set; }
     public required List<EnrollmentPrograms> EnrollmentPrograms { get; set; }
     public required DateTime LastUpdate { get; set; }
+    public required EnrollmentStatus EnrollmentStatus { get; set; }
     public Guid? ManagerId { get; set; }
     public Manager? Manager { get; set; }
 }

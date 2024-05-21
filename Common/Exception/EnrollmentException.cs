@@ -5,6 +5,8 @@ public class EnrollmentException(string message = "Enrollment for this applicant
 
 public class EnrollmentNotFound(string message) : System.Exception(message);
 
-public class EnrollmentProgrammNotFound(string message) : System.Exception(message);
+public class EnrollmentProgramNotFound(string message) : System.Exception(message);
 
 public class EnrollmentProgramStatusException(string message) : System.Exception(message);
+
+public class NonUniquePriorityException(string message) : System.Exception(message);

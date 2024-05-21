@@ -1,4 +1,3 @@
-using EnrollmentService.Application.BackgroundWorkers;
 using EnrollmentService.Data.Repository;
 using EnrollmentService.Domain.Repository;
 using EnrollmentService.Domain.Service;

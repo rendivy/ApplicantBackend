@@ -5,8 +5,8 @@ using EnrollmentService.Data.Database;
 using EnrollmentService.Domain.Entity;
 using EnrollmentService.Domain.Service;
 using EnrollmentService.Presentation.Model;
+using EnrollmentService.Presentation.Util;
 using Microsoft.EntityFrameworkCore;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
 namespace EnrollmentService.Presentation.Service;
@@ -32,6 +32,12 @@ public class AdmissionService : IAdmissionService
             throw new UserNotFoundException($"Applicant with this id not found");
         }
 
+        if (!AdmissionRequestValidator.HasUniquePriorities(admission))
+        {
+            throw new NonUniquePriorityException("Priority in admission is not unique");
+        }
+
+
         var enrollmentExists = _dbContext.Enrollment.Any(e => e.ApplicantId == applicantId);
         if (enrollmentExists)
         {
@@ -46,6 +52,7 @@ public class AdmissionService : IAdmissionService
             ApplicantId = applicantId,
             Applicant = applicant,
             LastUpdate = DateTime.Now.ToUniversalTime(),
+            EnrollmentStatus = EnrollmentStatus.Created,
             EnrollmentPrograms = new List<EnrollmentPrograms>()
         };
 
@@ -56,6 +63,11 @@ public class AdmissionService : IAdmissionService
             {
                 var response = await _bus.Rpc.RequestAsync<Guid, HandbookModelRequest?>(
                     program.AdmissionProgramId, x => x.WithQueueName("handbook_getprogrambyid"));
+                if (response == null)
+                {
+                    throw new EnrollmentProgramNotFound("Enrollment with this id not found");
+                }
+
                 admissionProgram = new AdmissionProgram
                 {
                     Id = response.Id,
@@ -68,16 +80,11 @@ public class AdmissionService : IAdmissionService
                     EducationLevelId = response.EducationLevelId
                 };
             }
-            else
-            {
-                throw new Exception($"Admission program with id {program.AdmissionProgramId} not found");
-            }
 
             await _dbContext.EnrollmentPrograms.AddAsync(new EnrollmentPrograms
             {
                 EnrollmentId = enrollmentId,
                 EnrollmentPriority = program.Priority,
-                EnrollmentStatus = program.Status,
                 AdmissionProgram = admissionProgram
             });
         }
@@ -88,56 +95,66 @@ public class AdmissionService : IAdmissionService
 
     public async Task EditAdmission(AdmissionRequest admission, Guid applicantId)
     {
-        var enrollment = _dbContext.Enrollment.Include(enrollment => enrollment.EnrollmentPrograms)
-            .ThenInclude(enrollmentPrograms => enrollmentPrograms.AdmissionProgram)
+        var applicant = _dbContext.Applicant.FirstOrDefault(a => a.Id == applicantId);
+        if (applicant == null)
+        {
+            throw new UserNotFoundException($"Applicant with this id not found");
+        }
+
+        var enrollment = _dbContext.Enrollment
+            .Include(e => e.EnrollmentPrograms)
             .FirstOrDefault(e => e.ApplicantId == applicantId);
         if (enrollment == null)
         {
             throw new EnrollmentNotFound("Enrollment for this applicant does not exist");
         }
 
-        foreach (var program in admission.Programs)
+        if (enrollment.EnrollmentStatus != EnrollmentStatus.Created &&
+            enrollment.EnrollmentStatus != EnrollmentStatus.Rejected)
         {
-            var enrollmentProgram =
-                enrollment.EnrollmentPrograms.FirstOrDefault(ep =>
-                    ep.AdmissionProgram.Id == program.AdmissionProgramId);
-            if (enrollmentProgram == null)
-            {
-                var response =
-                    await _httpClient.GetAsync($"http://localhost:5178/api/handbook/{program.AdmissionProgramId}");
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var admissionProgram = JsonSerializer.Deserialize<AdmissionProgram>(content);
-                    enrollmentProgram = new EnrollmentPrograms
-                    {
-                        EnrollmentId = enrollment.Id,
-                        EnrollmentPriority = program.Priority,
-                        EnrollmentStatus = program.Status,
-                        AdmissionProgram = admissionProgram
-                    };
-                    enrollment.EnrollmentPrograms.ToList().Add(enrollmentProgram);
-                }
-                else
-                {
-                    throw new Exception($"Admission program with id {program.AdmissionProgramId} not found");
-                }
-            }
-            else
-            {
-                if (enrollmentProgram.EnrollmentStatus != EnrollmentStatus.Created &&
-                    enrollmentProgram.EnrollmentStatus != EnrollmentStatus.Rejected)
-                {
-                    throw new EnrollmentProgramStatusException(
-                        "Cannot change the program with status not equal to Created or Rejected");
-                }
-
-                enrollmentProgram.EnrollmentPriority = program.Priority;
-                enrollmentProgram.EnrollmentStatus = program.Status;
-            }
+            throw new EnrollmentProgramStatusException("Enrollment status is not 'Created' or 'Rejected'");
         }
 
-        _dbContext.Enrollment.Update(enrollment);
+        if (!AdmissionRequestValidator.HasUniquePriorities(admission))
+        {
+            throw new NonUniquePriorityException("Priority in admission is not unique");
+        }
+
+        enrollment.EnrollmentPrograms.Clear();
+        foreach (var program in admission.Programs)
+        {
+            var admissionProgram = _dbContext.Program.FirstOrDefault(ap => ap.Id == program.AdmissionProgramId);
+            if (admissionProgram == null)
+            {
+                var response = await _bus.Rpc.RequestAsync<Guid, HandbookModelRequest?>(
+                    program.AdmissionProgramId, x => x.WithQueueName("handbook_getprogrambyid"));
+                if (response == null)
+                {
+                    throw new EnrollmentProgramNotFound("Enrollment with this id not found");
+                }
+
+                admissionProgram = new AdmissionProgram
+                {
+                    Id = response.Id,
+                    CreateTime = response.CreateTime,
+                    Name = response.Name,
+                    Code = response.Code,
+                    Language = response.Language,
+                    EducationForm = response.EducationForm,
+                    FacultyId = response.FacultyId,
+                    EducationLevelId = response.EducationLevelId
+                };
+            }
+
+            await _dbContext.EnrollmentPrograms.AddAsync(new EnrollmentPrograms
+            {
+                EnrollmentId = enrollment.Id,
+                EnrollmentPriority = program.Priority,
+                AdmissionProgram = admissionProgram
+            });
+        }
+
+        enrollment.LastUpdate = DateTime.Now.ToUniversalTime();
         await _dbContext.SaveChangesAsync();
     }
 }
