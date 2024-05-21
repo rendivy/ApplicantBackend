@@ -1,5 +1,4 @@
 using EnrollmentService.Domain.Entity;
-using EnrollmentService.Presentation.Util;
 
 namespace EnrollmentService.Presentation.Model;
 

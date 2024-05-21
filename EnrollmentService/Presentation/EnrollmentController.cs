@@ -1,6 +1,4 @@
 using System.Security.Claims;
-using EnrollmentService.Application.Model;
-using EnrollmentService.Application.Services;
 using EnrollmentService.Domain.Service;
 using EnrollmentService.Presentation.Model;
 using Microsoft.AspNetCore.Authorization;

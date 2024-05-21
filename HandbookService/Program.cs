@@ -1,10 +1,8 @@
-using System.Text.Json.Serialization;
 using EasyNetQ;
 using HandbookService.Domain.Service;
 using HandbookService.Infrastructure.Data;
 using HandbookService.Presentation.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
