@@ -6,4 +6,5 @@ namespace AuthService.Domain.Interfaces;
 public interface IAdminService
 {
     public Task CreateManager(CreateManagerRequest createManagerRequest, string userRole);
+    public Task CreateMainManager(CreateManagerRequest createManagerRequest, string userRole);
 }
