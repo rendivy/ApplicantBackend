@@ -1,7 +1,6 @@
-using AuthService.Domain.Entity;
 using Common.BaseModel;
 
-namespace AuthService.Presentation.Models.Account;
+namespace AuthService.Presentation.Models.Profile;
 
 public record UserRequest
 {

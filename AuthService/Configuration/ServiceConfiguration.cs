@@ -14,5 +14,7 @@ public static class ServiceConfiguration
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IProfileService, ProfileService>();
         services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<AdminService>();
+        services.AddScoped<IAdminService, AdminService>();
     }
 }

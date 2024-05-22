@@ -4,6 +4,7 @@ using AuthService.Infrastructure.Data.Database;
 using AuthService.Presentation.Mappers;
 using AuthService.Presentation.Models;
 using AuthService.Presentation.Models.Account;
+using AuthService.Presentation.Models.Profile;
 using AuthService.Presentation.Models.Token;
 using Common.Exception;
 using Common.RabbitModel.Email;

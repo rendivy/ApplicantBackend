@@ -1,5 +1,6 @@
 using AuthService.Domain.Entity;
 using AuthService.Presentation.Models.Account;
+using AuthService.Presentation.Models.Profile;
 using AuthService.Presentation.Models.Token;
 
 namespace AuthService.Domain.Interfaces;

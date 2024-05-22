@@ -3,6 +3,7 @@ using AuthService.Application.Services;
 using AuthService.Configuration;
 using AuthService.Domain.Entity;
 using AuthService.Infrastructure.Data.Database;
+using Common.BaseModel;
 using EasyNetQ;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +78,39 @@ using (var scope = app.Services.CreateScope())
         if (!roleManager.RoleExistsAsync(role).Result)
         {
             roleManager.CreateAsync(new IdentityRole(role)).Wait();
+        }
+    }
+
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    var adminRole = Roles.Admin.ToString();
+    var adminUser = await userManager.FindByNameAsync("admin");
+    if (adminUser == null)
+    {
+        adminUser = new User
+        {
+            UserName = "admin",
+            Email = "admin@example.com",
+            EmailConfirmed = true,
+            Citizenship = "Admin",
+            DateOfBirth = new DateOnly(1990, 1, 1),
+            FullName = "Admin",
+            Gender = Gender.Male,
+            PhoneNumber = "+7905553535"
+        };
+        userManager.Options.Password.RequireDigit = false;
+        userManager.Options.Password.RequiredLength = 0;
+        userManager.Options.Password.RequireNonAlphanumeric = false;
+        userManager.Options.Password.RequireUppercase = false;
+        userManager.Options.Password.RequireLowercase = false;
+        var result = await userManager.CreateAsync(adminUser, "admin");
+        userManager.Options.Password.RequireDigit = true;
+        userManager.Options.Password.RequiredLength = 6;
+        userManager.Options.Password.RequireNonAlphanumeric = true;
+        userManager.Options.Password.RequireUppercase = true;
+        userManager.Options.Password.RequireLowercase = true;
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(adminUser, adminRole);
         }
     }
 }

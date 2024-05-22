@@ -1,6 +1,7 @@
 using AuthService.Domain.Entity;
 using AuthService.Presentation.Models;
 using AuthService.Presentation.Models.Account;
+using AuthService.Presentation.Models.Profile;
 using Microsoft.AspNetCore.Identity;
 
 namespace AuthService.Presentation.Mappers;
