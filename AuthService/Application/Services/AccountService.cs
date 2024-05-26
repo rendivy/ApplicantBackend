@@ -9,6 +9,7 @@ using Common.Exception;
 using Common.RabbitModel.User;
 using EasyNetQ;
 using Microsoft.AspNetCore.Identity;
+using StackExchange.Redis;
 
 namespace AuthService.Application.Services;
 
@@ -66,11 +67,12 @@ public class AccountService(
 
         await userManager.AddToRoleAsync(user, Roles.Applicant.ToString());
         var response = jwtProvider.CreateTokenResponse(new Guid(user.Id), Roles.Applicant.ToString());
-        await bus.PubSub.PublishAsync(new ApplicantResponse
+        await bus.PubSub.PublishAsync(new UserRabbitResponse
             {
                 Email = user.Email,
                 FullName = user.FullName,
                 Id = new Guid(user.Id),
+                Roles = Roles.Applicant.ToString(),
                 DateOfBirth = user.DateOfBirth,
                 PhoneNumber = user.PhoneNumber,
                 Gender = user.Gender,

@@ -3,6 +3,7 @@ using AuthService.Domain.Entity;
 using AuthService.Domain.Interfaces;
 using AuthService.Presentation.Models.Admin;
 using Common.RabbitModel.Email;
+using Common.RabbitModel.User;
 using EasyNetQ;
 using Microsoft.AspNetCore.Identity;
 
@@ -38,6 +39,18 @@ public class AdminService(
         }
 
         await userManager.AddToRoleAsync(user, Roles.Manager.ToString());
+        await bus.PubSub.PublishAsync(new UserRabbitResponse
+            {
+                Email = user.Email,
+                FullName = user.FullName,
+                Id = new Guid(user.Id),
+                Roles = Roles.Manager.ToString(),
+                DateOfBirth = user.DateOfBirth,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                Citizenship = user.Citizenship
+            }
+        );
         await bus.PubSub.PublishAsync(new EmailResponse
             {
                 From = "admin@tsu.ru",

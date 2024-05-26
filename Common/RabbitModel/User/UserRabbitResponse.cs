@@ -2,10 +2,11 @@ using Common.BaseModel;
 
 namespace Common.RabbitModel.User;
 
-public class ApplicantResponse
+public class UserRabbitResponse
 {
     public required Guid Id { get; init; }
     public required string Email { get; init; }
+    public required string Roles { get; init; }
     public required DateOnly DateOfBirth { get; init; }
     public required string FullName { get; init; }
     public required string PhoneNumber { get; init; }
@@ -65,18 +66,5 @@ public class ApplicantResponseBuilder
         _citizenship = citizenship;
         return this;
     }
-
-    public ApplicantResponse Build()
-    {
-        return new ApplicantResponse
-        {
-            Id = _id,
-            Email = _email,
-            DateOfBirth = _dateOfBirth,
-            FullName = _fullName,
-            PhoneNumber = _phoneNumber,
-            Gender = _gender,
-            Citizenship = _citizenship
-        };
-    }
+    
 }
