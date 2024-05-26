@@ -100,6 +100,7 @@ public class DocumentService(EnrollmentDatabaseContext databaseContext) : IDocum
             {
                 Id = it.Id,
                 CreateTime = it.CreateTime,
+                FilePath = it.FilePath,
                 Name = it.Name
             }).ToList();
         return Task.FromResult(educationDocuments);

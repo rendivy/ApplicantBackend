@@ -13,6 +13,7 @@ public class EducationDocumentResponse
     public required Guid Id { get; set; }
     public required DateTime CreateTime { get; set; }
     public required string Name { get; set; } = string.Empty;
+    public required string? FilePath { get; set; } = string.Empty;
 }
 
 public class PassportDocumentRequest
