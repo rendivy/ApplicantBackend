@@ -18,7 +18,17 @@ public class ManagerController(IManagerService managerService) : Controller
         await managerService.SetManagerOnEnrollment(enrollmentId, userId!);
         return Ok();
     }
-    
+
+    [HttpPost]
+    [Route("remove-manager-from-enrollment")]
+    [Authorize]
+    public async Task<IActionResult> RemoveManagerFromEnrollment(string enrollmentId)
+    {
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
+        await managerService.RemoveManagerFromEnrollment(enrollmentId, userId!);
+        return Ok();
+    }
+
     [HttpGet]
     [Route("get-applicant-documents")]
     [Authorize]
