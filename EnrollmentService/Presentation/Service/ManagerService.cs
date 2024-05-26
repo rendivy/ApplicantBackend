@@ -5,6 +5,7 @@ using EnrollmentService.Data.Database;
 using EnrollmentService.Domain.Entity;
 using EnrollmentService.Domain.Entity.Document;
 using EnrollmentService.Domain.Service;
+using EnrollmentService.Presentation.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnrollmentService.Presentation.Service;
@@ -40,8 +41,64 @@ public class ManagerService(EnrollmentDatabaseContext enrollmentDatabaseContext,
             }
         );
         enrollment.ManagerId = new Guid(managerId);
+        enrollment.LastUpdate = DateTime.Now;
         enrollmentDatabaseContext.Update(enrollment);
         await enrollmentDatabaseContext.SaveChangesAsync();
+    }
+
+
+    public async Task<PagedList<EnrollmentDTO>> GetApplicantEnrollment(string? name, string? program, Guid? faculties,
+        EnrollmentStatus? status, bool unassigned, string managerId, int pageNumber, int pageSize, SortOrder sortOrder)
+    {
+        var query = enrollmentDatabaseContext.Enrollment.Include(e => e.Applicant).Include(e => e.EnrollmentPrograms)
+            .ThenInclude(ep => ep.AdmissionProgram).AsQueryable();
+
+        if (!string.IsNullOrEmpty(name))
+        {
+            query = query.Where(e => e.Applicant.FullName.Contains(name));
+        }
+
+        if (!string.IsNullOrEmpty(program))
+        {
+            query = query.Where(e => e.EnrollmentPrograms.Any(ep => ep.AdmissionProgram!.Name == program));
+        }
+
+        if (faculties != null)
+        {
+            query = query.Where(e => e.EnrollmentPrograms.Any(ep =>
+                ep.AdmissionProgram != null && (faculties == ep.AdmissionProgram.FacultyId)));
+        }
+
+        if (status.HasValue)
+        {
+            query = query.Where(e => e.EnrollmentStatus == status.Value);
+        }
+
+        if (unassigned)
+        {
+            query = query.Where(e => e.ManagerId == null);
+        }
+
+        if (!string.IsNullOrEmpty(managerId))
+        {
+            query = query.Where(e => e.ManagerId == new Guid(managerId));
+        }
+
+        query = sortOrder == SortOrder.Ascending
+            ? query.OrderBy(e => e.LastUpdate)
+            : query.OrderByDescending(e => e.LastUpdate);
+
+        var dtoQuery = query.Select(e => new EnrollmentDTO
+        {
+            Id = e.Id,
+            Applicant = e.Applicant,
+            EnrollmentPrograms = e.EnrollmentPrograms,
+            LastUpdate = e.LastUpdate,
+            EnrollmentStatus = e.EnrollmentStatus,
+            ManagerId = e.ManagerId,
+            Manager = e.Manager
+        });
+        return await PagedList<EnrollmentDTO>.CreateAsync(dtoQuery, pageNumber, pageSize);
     }
 
     public async Task RemoveManagerFromEnrollment(string enrollmentId, string managerId)
@@ -65,6 +122,7 @@ public class ManagerService(EnrollmentDatabaseContext enrollmentDatabaseContext,
         }
 
         enrollment.ManagerId = null;
+        enrollment.LastUpdate = DateTime.Now;
         enrollmentDatabaseContext.Update(enrollment);
         await bus.PubSub.PublishAsync(new EmailResponse
             {
@@ -110,7 +168,7 @@ public class ManagerService(EnrollmentDatabaseContext enrollmentDatabaseContext,
     public Task EditApplicantEducationDocument(string applicantId, string managerId, EducationDocument document)
     {
         var manager = enrollmentDatabaseContext.Manager.FirstOrDefault(it => it.Id == new Guid(managerId));
-        
+
         if (manager == null)
         {
             throw new UnauthorizedAccessException("You are not authorized to get applicant documents");
@@ -170,6 +228,7 @@ public class ManagerService(EnrollmentDatabaseContext enrollmentDatabaseContext,
             }
         );
         enrollment.EnrollmentStatus = status;
+        enrollment.LastUpdate = DateTime.Now;
         enrollmentDatabaseContext.Update(enrollment);
         await enrollmentDatabaseContext.SaveChangesAsync();
     }
