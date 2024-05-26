@@ -8,6 +8,7 @@ using HandbookService.Domain.Service;
 using HandbookService.Infrastructure.Data;
 using HandbookService.Presentation.Mappers;
 using HandbookService.Presentation.Model;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace HandbookService.Infrastructure.Service;
@@ -186,6 +187,57 @@ public class HandbookService : IHandbookService
     public Task UpdateAllHandbookDataAsync()
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<PagedResult<EducationProgram>> GetProgramsAsync(
+        int pageNumber,
+        int pageSize,
+        Guid? facultyId = null,
+        int? educationLevelId = null,
+        string educationForm = null,
+        string language = null,
+        string searchTerm = null)
+    {
+        var query = _handbookDbContext.Program.AsQueryable();
+
+        if (facultyId.HasValue)
+        {
+            query = query.Where(p => p.FacultyId == facultyId.Value);
+        }
+
+        if (educationLevelId.HasValue)
+        {
+            query = query.Where(p => p.EducationLevelId == educationLevelId.Value);
+        }
+
+        if (!string.IsNullOrEmpty(educationForm))
+        {
+            query = query.Where(p => p.EducationForm == educationForm);
+        }
+
+        if (!string.IsNullOrEmpty(language))
+        {
+            query = query.Where(p => p.Language == language);
+        }
+
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            query = query.Where(p => p.Name.Contains(searchTerm) || (p.Code != null && p.Code.Contains(searchTerm)));
+        }
+
+        var totalItems = await query.CountAsync();
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PagedResult<EducationProgram>
+        {
+            Items = items,
+            TotalItems = totalItems,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 }
 
