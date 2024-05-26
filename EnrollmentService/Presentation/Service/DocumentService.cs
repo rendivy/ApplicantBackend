@@ -106,6 +106,26 @@ public class DocumentService(EnrollmentDatabaseContext databaseContext) : IDocum
         return Task.FromResult(educationDocuments);
     }
 
+    public Task<PassportDocumentResponse> GetPassportInformation(string userId)
+    {
+        var passport = databaseContext.Passport
+            .FirstOrDefault(it => it.ApplicantId.ToString() == userId);
+        if (passport == null)
+        {
+            throw new EnrollmentNotFound("Passport not found");
+        }
+
+        return Task.FromResult(new PassportDocumentResponse
+        {
+            Id = passport.Id,
+            DateOfIssue = passport.DateOfIssue,
+            IssuedBy = passport.IssuedBy,
+            PlaceOfBirth = passport.PlaceOfBirth,
+            SeriesAndNumber = passport.SeriesAndNumber,
+            FilePath = passport.FilePath
+        });
+    }
+
 
     public Task AddEducationDocumentInformation(EducationDocumentRequest educationDocumentRequest, string userId)
     {

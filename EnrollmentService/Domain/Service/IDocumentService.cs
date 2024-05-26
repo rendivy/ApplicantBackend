@@ -9,6 +9,7 @@ public interface IDocumentService
     Task AddPassportInformation(PassportDocumentRequest passportDocumentRequest, string userId);
     Task EditPassportInformation(PassportDocumentRequest passportDocumentRequest, string userId);
     Task<List<EducationDocumentResponse>> GetEducationDocumentInformation(string userId); 
+    Task<PassportDocumentResponse> GetPassportInformation(string userId);
     Task AddEducationDocumentInformation(EducationDocumentRequest educationDocumentRequest, string userId);
     Task SavePassport(IFormFile file);
 }

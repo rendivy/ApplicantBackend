@@ -1,5 +1,3 @@
-using EnrollmentService.Domain.Entity.Document;
-
 namespace EnrollmentService.Presentation.Model;
 
 public class EducationDocumentRequest
@@ -22,4 +20,14 @@ public class PassportDocumentRequest
     public required string PlaceOfBirth { get; set; }
     public required string IssuedBy { get; set; }
     public required DateTime DateOfIssue { get; set; }
+}
+
+public class PassportDocumentResponse
+{
+    public required Guid Id { get; set; }
+    public required string SeriesAndNumber { get; set; }
+    public required string PlaceOfBirth { get; set; }
+    public required string IssuedBy { get; set; }
+    public required DateTime DateOfIssue { get; set; }
+    public required string? FilePath { get; set; }
 }

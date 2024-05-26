@@ -8,17 +8,9 @@ using Newtonsoft.Json;
 namespace EnrollmentService.Presentation;
 
 [ApiController]
-public class EnrollmentController : Controller
+public class EnrollmentController(IAdmissionService admissionService, IDocumentService documentService)
+    : Controller
 {
-    private readonly IAdmissionService admissionService;
-    private readonly IDocumentService documentService;
-
-    public EnrollmentController(IAdmissionService admissionService, IDocumentService documentService)
-    {
-        this.admissionService = admissionService;
-        this.documentService = documentService;
-    }
-
     [HttpPost("upload-scan")]
     [Authorize]
     public async Task<IActionResult> Upload(IFormFile file, string educationDocumentId)
@@ -26,6 +18,16 @@ public class EnrollmentController : Controller
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
         await documentService.SaveDocumentScan(file, userId!, educationDocumentId);
         return Ok();
+    }
+
+    [HttpGet]
+    [Authorize]
+    [Route("get-passport")]
+    public async Task<PassportDocumentResponse> GetPassportInformation()
+    {
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
+        var result = await documentService.GetPassportInformation(userId!);
+        return result;
     }
 
     [HttpPost("upload-education-document")]
@@ -36,7 +38,7 @@ public class EnrollmentController : Controller
         await documentService.AddEducationDocumentInformation(request, userId!);
         return Ok();
     }
-    
+
     [HttpPut("edit-education-document")]
     [Authorize]
     public async Task<IActionResult> EditEducationDocument(EducationDocumentRequest request, string educationDocumentId)
