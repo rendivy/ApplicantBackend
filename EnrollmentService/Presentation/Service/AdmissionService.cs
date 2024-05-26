@@ -55,7 +55,7 @@ public class AdmissionService : IAdmissionService
             EnrollmentStatus = EnrollmentStatus.Created,
             EnrollmentPrograms = new List<EnrollmentPrograms>()
         };
-
+        var educationLevelId = -1;
         foreach (var program in admission.Programs)
         {
             var admissionProgram = _dbContext.Program.FirstOrDefault(ap => ap.Id == program.AdmissionProgramId);
@@ -66,6 +66,15 @@ public class AdmissionService : IAdmissionService
                 if (response == null)
                 {
                     throw new EnrollmentProgramNotFound("Enrollment with this id not found");
+                }
+
+                if (educationLevelId == -1)
+                {
+                    if (admissionProgram != null) educationLevelId = admissionProgram.EducationLevelId;
+                }
+                else if (admissionProgram != null && educationLevelId != admissionProgram.EducationLevelId)
+                {
+                    throw new Exception("All programs in the admission must have the same education level");
                 }
 
                 admissionProgram = new AdmissionProgram
@@ -121,6 +130,7 @@ public class AdmissionService : IAdmissionService
         }
 
         enrollment.EnrollmentPrograms.Clear();
+        var educationLevelId = -1;
         foreach (var program in admission.Programs)
         {
             var admissionProgram = _dbContext.Program.FirstOrDefault(ap => ap.Id == program.AdmissionProgramId);
@@ -131,6 +141,15 @@ public class AdmissionService : IAdmissionService
                 if (response == null)
                 {
                     throw new EnrollmentProgramNotFound("Enrollment with this id not found");
+                }
+
+                if (educationLevelId == -1)
+                {
+                    if (admissionProgram != null) educationLevelId = admissionProgram.EducationLevelId;
+                }
+                else if (admissionProgram != null && educationLevelId != admissionProgram.EducationLevelId)
+                {
+                    throw new Exception("All programs in the admission must have the same education level");
                 }
 
                 admissionProgram = new AdmissionProgram

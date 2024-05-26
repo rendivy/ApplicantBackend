@@ -44,6 +44,30 @@ public class HandbookService : IHandbookService
         return await remoteResponse.Content.ReadAsStringAsync();
     }
 
+    private async Task ClearFaculties()
+    {
+        _handbookDbContext.Faculty.RemoveRange(_handbookDbContext.Faculty);
+        await _handbookDbContext.SaveChangesAsync();
+    }
+
+    private async Task ClearEducationLevels()
+    {
+        _handbookDbContext.EducationLevel.RemoveRange(_handbookDbContext.EducationLevel);
+        await _handbookDbContext.SaveChangesAsync();
+    }
+
+    private async Task ClearDocumentTypes()
+    {
+        _handbookDbContext.DocumentType.RemoveRange(_handbookDbContext.DocumentType);
+        await _handbookDbContext.SaveChangesAsync();
+    }
+
+    private async Task ClearPrograms()
+    {
+        _handbookDbContext.Program.RemoveRange(_handbookDbContext.Program);
+        await _handbookDbContext.SaveChangesAsync();
+    }
+
 
     private async Task ImportExternalDictionary()
     {
@@ -52,32 +76,18 @@ public class HandbookService : IHandbookService
             Id = Guid.NewGuid(),
             Status = ImportStatus.InProcess,
         };
-
-
-        await using var transaction = await _handbookDbContext.Database.BeginTransactionAsync();
-
-        try
-        {
-            await _handbookDbContext.HandbookImport.AddAsync(newImport);
-            await _handbookDbContext.SaveChangesAsync();
-            await UpdateFaculties();
-            await UpdateEducationLevels();
-            await UpdateDocumentTypes();
-            await UpdatePrograms();
-//синхронно делать плохо
-//транзакция излишняя
-            await _handbookDbContext.SaveChangesAsync();
-
-            newImport.Status = ImportStatus.Finished;
-            await _handbookDbContext.SaveChangesAsync();
-
-            await transaction.CommitAsync();
-        }
-        catch (Exception)
-        {
-            await transaction.RollbackAsync();
-            throw;
-        }
+        await ClearFaculties();
+        await ClearEducationLevels();
+        await ClearDocumentTypes();
+        await ClearPrograms();
+        await _handbookDbContext.HandbookImport.AddAsync(newImport);
+        await _handbookDbContext.SaveChangesAsync();
+        await UpdateFaculties();
+        await UpdateEducationLevels();
+        await UpdateDocumentTypes();
+        await UpdatePrograms();
+        newImport.Status = ImportStatus.Finished;
+        await _handbookDbContext.SaveChangesAsync();
     }
 
     private async Task UpdateData<TResponse, TEntity, TMapper, TId>(string endpoint)
