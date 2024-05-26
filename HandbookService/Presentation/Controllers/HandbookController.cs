@@ -28,6 +28,10 @@ public class HandbookController(IHandbookService handbookService) : Controller
         [FromQuery] string language = null,
         [FromQuery] string searchTerm = null)
     {
+        if (pageNumber < 1 || pageSize < 1)
+        {
+            return BadRequest("Page number and page size must be greater than 0");
+        }
         PagedResult<EducationProgram> programs = await handbookService.GetProgramsAsync(
             pageNumber,
             pageSize,
