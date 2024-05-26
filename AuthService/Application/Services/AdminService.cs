@@ -89,6 +89,18 @@ public class AdminService(
         }
 
         await userManager.AddToRoleAsync(user, Roles.MainManager.ToString());
+        await bus.PubSub.PublishAsync(new UserRabbitResponse
+            {
+                Email = user.Email,
+                FullName = user.FullName,
+                Id = new Guid(user.Id),
+                Roles = Roles.MainManager.ToString(),
+                DateOfBirth = user.DateOfBirth,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                Citizenship = user.Citizenship
+            }
+        );
         await bus.PubSub.PublishAsync(new EmailResponse
             {
                 From = "admin@tsu.ru",

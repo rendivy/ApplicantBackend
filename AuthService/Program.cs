@@ -8,6 +8,7 @@ using EasyNetQ;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +51,7 @@ builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerSche
 builder.Services.AddAuthorizationBuilder();
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-builder.Services.AddSingleton<RedisDatabaseContext>(
+builder.Services.AddSingleton(
     new RedisDatabaseContext(builder.Configuration.GetConnectionString("RedisDatabase")));
 builder.Services.AddDbContext<AuthDbContext>(
     it => it.UseNpgsql(builder.Configuration.GetConnectionString("AuthDatabaseConnection")));
@@ -111,6 +112,9 @@ using (var scope = app.Services.CreateScope())
         if (result.Succeeded)
         {
             await userManager.AddToRoleAsync(adminUser, adminRole);
+            await userManager.AddToRoleAsync(adminUser, Roles.Applicant.ToString());
+            await userManager.AddToRoleAsync(adminUser, Roles.Manager.ToString());
+            await userManager.AddToRoleAsync(adminUser, Roles.MainManager.ToString());
         }
     }
 }

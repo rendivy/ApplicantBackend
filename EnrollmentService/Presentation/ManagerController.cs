@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using EnrollmentService.Domain.Entity;
+using EnrollmentService.Domain.Entity.Document;
 using EnrollmentService.Domain.Service;
 using EnrollmentService.Presentation.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +18,26 @@ public class ManagerController(IManagerService managerService, IDocumentService 
     {
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
         await managerService.SetManagerOnEnrollment(enrollmentId, userId!);
+        return Ok();
+    }
+
+    [HttpPost]
+    [Route("edit-applicant-document")]
+    [Authorize]
+    public async Task<IActionResult> EditApplicantEducationDocument(string applicantId, EducationDocument document)
+    {
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
+        await managerService.EditApplicantEducationDocument(applicantId, userId!, document);
+        return Ok();
+    }
+
+    [HttpPost]
+    [Route("remove-applicant-scan")]
+    [Authorize]
+    public async Task<IActionResult> RemoveApplicantScan(string documentId)
+    {
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
+        await managerService.RemoveApplicantScan(documentId, userId!);
         return Ok();
     }
 

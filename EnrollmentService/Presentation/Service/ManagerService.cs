@@ -165,6 +165,24 @@ public class ManagerService(EnrollmentDatabaseContext enrollmentDatabaseContext,
         return Task.FromResult(applicant);
     }
 
+    public Task RemoveApplicantScan(string documentId, string managerId)
+    {
+        var manager = enrollmentDatabaseContext.Manager.FirstOrDefault(it => it.Id == new Guid(managerId));
+        if (manager == null)
+        {
+            throw new UnauthorizedAccessException("You are not authorized to get applicant documents");
+        }
+
+        var document = enrollmentDatabaseContext.Document.FirstOrDefault(it => it.Id == new Guid(documentId));
+        if (document == null)
+        {
+            throw new EnrollmentNotFound("Document not found");
+        }
+
+        enrollmentDatabaseContext.Remove(document);
+        return enrollmentDatabaseContext.SaveChangesAsync();
+    }
+
     public Task EditApplicantEducationDocument(string applicantId, string managerId, EducationDocument document)
     {
         var manager = enrollmentDatabaseContext.Manager.FirstOrDefault(it => it.Id == new Guid(managerId));

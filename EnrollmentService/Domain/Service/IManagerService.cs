@@ -16,6 +16,8 @@ public interface IManagerService
     public Task<List<Document>> GetApplicantDocuments(string applicantId, string managerId);
 
     public Task<Applicant> GetApplicant(string applicantId, string managerId);
+    
+    public Task RemoveApplicantScan(string documentId, string managerId);
 
     public Task EditApplicantEducationDocument(string applicantId, string managerId, EducationDocument document);
 

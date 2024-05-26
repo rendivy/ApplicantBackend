@@ -20,4 +20,13 @@ public class AdminController(IAdminService adminService) : Controller
         await adminService.CreateManager(createManagerRequest, userRole!);
         return Ok();
     }
+
+    [HttpPost]
+    [Route("create-main-manager")]
+    public async Task<IActionResult> CreateMainManager(CreateManagerRequest createManagerRequest)
+    {
+        var userRole = User.FindFirstValue(ClaimTypes.Role);
+        await adminService.CreateMainManager(createManagerRequest, userRole!);
+        return Ok();
+    }
 }

@@ -21,5 +21,7 @@ public static class ServiceConfiguration
         services.AddScoped<IDocumentService, DocumentService>();
         services.AddScoped<ManagerService>();
         services.AddScoped<IManagerService, ManagerService>();
+        services.AddScoped<MainManagerService>();
+        services.AddScoped<IMainManagerService, MainManagerService>();
     }
 }
