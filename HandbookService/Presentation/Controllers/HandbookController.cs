@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using HandbookService.Domain.Model;
 using HandbookService.Domain.Model.Education;
 using HandbookService.Domain.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HandbookService.Presentation.Controllers;
@@ -11,14 +13,21 @@ public class HandbookController(IHandbookService handbookService) : Controller
 {
     [HttpPost]
     [Route("update-faculty")]
+    [Authorize]
     public async Task<IActionResult> UpdateFaculty()
     {
+        var userRole = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role)?.Value;
+        if (userRole != "Admin")
+        {
+            throw new Exception("Only admin can update faculty");
+        }
         await handbookService.ImportAllHandbookDataAsync();
         return Ok();
     }
 
     [HttpGet]
     [Route("programs")]
+    [Authorize]
     public async Task<IActionResult> GetPrograms(
         [FromQuery] int pageNumber,
         [FromQuery] int pageSize,
