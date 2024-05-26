@@ -1,3 +1,5 @@
+using Common.Exception;
+
 namespace HandbookService.Infrastructure;
 
 public class GlobalExceptionsMiddleware(RequestDelegate next)
@@ -7,6 +9,10 @@ public class GlobalExceptionsMiddleware(RequestDelegate next)
         try
         {
             await next(context);
+        }
+        catch (UnauthorizedRoleException exception)
+        {
+            await SetExceptionAsync(context, StatusCodes.Status403Forbidden, exception.Message);
         }
         catch (Exception exception)
         {

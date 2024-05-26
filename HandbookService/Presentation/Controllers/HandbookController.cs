@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Common.Exception;
 using HandbookService.Domain.Model;
 using HandbookService.Domain.Model.Education;
 using HandbookService.Domain.Service;
@@ -19,7 +20,7 @@ public class HandbookController(IHandbookService handbookService) : Controller
         var userRole = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role)?.Value;
         if (userRole != "Admin")
         {
-            throw new Exception("Only admin can update faculty");
+            throw new UnauthorizedRoleException("Only admin can update faculty");
         }
         await handbookService.ImportAllHandbookDataAsync();
         return Ok();

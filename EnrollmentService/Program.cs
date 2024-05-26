@@ -1,6 +1,7 @@
 using EasyNetQ;
 using EnrollmentService.Application.BackgroundWorkers;
 using EnrollmentService.Application.Configuration;
+using EnrollmentService.Application.Middleware;
 using EnrollmentService.Data.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -69,4 +70,5 @@ using (var scope = app.Services.CreateScope())
 
 app.MapControllers();
 app.UseHttpsRedirection();
+app.UseMiddleware<GlobalExceptionsMiddleware>();
 app.Run();
