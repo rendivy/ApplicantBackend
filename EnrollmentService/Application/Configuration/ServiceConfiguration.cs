@@ -15,5 +15,7 @@ public static class ServiceConfiguration
         services.AddScoped<ApplicantRepository, ApplicantRepositoryImpl>();
         services.AddScoped<AdmissionService>();
         services.AddScoped<IAdmissionService, AdmissionService>();
+        services.AddScoped<DocumentService>();
+        services.AddScoped<IDocumentService, DocumentService>();
     }
 }

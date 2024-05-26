@@ -7,6 +7,7 @@ public class Document : BaseEntity
     public required DocumentType Type { get; set; }
     public required Guid ApplicantId { get; set; }
     public required Applicant Applicant { get; set; }
+    public string? FilePath { get; set; }
 }
 
 public class Passport : Document
